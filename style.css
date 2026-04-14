@@ -19,8 +19,8 @@
 }
 
 html {
-    scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
 }
 
 body {
@@ -29,8 +29,15 @@ body {
     color: var(--text);
     line-height: 1.6;
     overflow-x: hidden;
-    overscroll-behavior: none;
-    touch-action: manipulation;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+}
+
+html, body {
+    height: 100%;
+    position: relative;
 }
 
 .opening {
@@ -44,7 +51,7 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    transition: transform 0.8s ease, opacity 0.8s ease;
+    transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.6s ease;
 }
 
 .opening.hidden {
@@ -72,10 +79,6 @@ body {
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
     transform-origin: top;
     transition: transform 0.5s ease;
-}
-
-.envelope.open .envelope-flap {
-    transform: rotateX(120deg);
 }
 
 .envelope-body {
@@ -108,25 +111,11 @@ body {
     margin-bottom: 20px;
 }
 
-.open-btn {
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    padding: 12px 32px;
-    font-size: 0.9rem;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease;
-}
-
-.open-btn:active {
-    transform: scale(0.95);
-}
-
 .main-content {
     display: none;
     opacity: 0;
     transition: opacity 0.5s ease;
+    min-height: 100%;
 }
 
 .main-content.visible {
@@ -141,18 +130,24 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .section-inner {
     max-width: 480px;
     width: 100%;
     text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .hero {
     background: var(--primary);
     color: #fff;
     min-height: 100vh;
+    min-height: -webkit-fill-available;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -161,6 +156,10 @@ body {
 
 .hero-content {
     text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .hero-date {
@@ -187,11 +186,19 @@ body {
 .scroll-indicator {
     position: absolute;
     bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
     opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.scroll-indicator.hidden {
+    opacity: 0 !important;
+    pointer-events: none;
 }
 
 .scroll-indicator span {
@@ -315,11 +322,7 @@ body {
     font-size: 0.95rem;
     border-radius: 30px;
     cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.calendar-btn:active {
-    transform: scale(0.95);
+    touch-action: manipulation;
 }
 
 .gallery {
@@ -402,11 +405,7 @@ body {
     border-radius: 30px;
     font-size: 0.9rem;
     font-weight: 500;
-    transition: transform 0.2s ease;
-}
-
-.location-btn:active {
-    transform: scale(0.95);
+    touch-action: manipulation;
 }
 
 .rsvp {
@@ -457,6 +456,8 @@ body {
     font-size: 0.95rem;
     font-family: var(--font-sans);
     transition: border-color 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .form-group input::placeholder,
@@ -472,7 +473,6 @@ body {
 }
 
 .form-group select {
-    appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23fff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 16px center;
@@ -494,11 +494,7 @@ body {
     border-radius: 30px;
     cursor: pointer;
     margin-top: 8px;
-    transition: transform 0.2s ease, background 0.2s ease;
-}
-
-.rsvp-submit-btn:active {
-    transform: scale(0.98);
+    touch-action: manipulation;
 }
 
 .rsvp-result {
@@ -517,11 +513,7 @@ body {
     border-radius: 30px;
     cursor: pointer;
     margin-top: 16px;
-    transition: transform 0.2s ease;
-}
-
-.rsvp-copy-btn:active {
-    transform: scale(0.95);
+    touch-action: manipulation;
 }
 
 .footer {
@@ -572,11 +564,5 @@ body {
     
     .scroll-indicator {
         display: none;
-    }
-}
-
-@supports (-webkit-touch-callout: none) {
-    body {
-        min-height: -webkit-fill-available;
     }
 }

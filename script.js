@@ -3,31 +3,96 @@
     
     const opening = document.getElementById('opening');
     const main = document.getElementById('main');
+    const scrollIndicator = document.querySelector('.scroll-indicator');
     const rsvpForm = document.getElementById('rsvpForm');
     const rsvpResult = document.getElementById('rsvpResult');
+    let envelopeOpened = false;
     
-    if (!opening || !main) return;
-    
-    window.openEnvelope = function() {
+    function openEnvelope(auto) {
+        if (envelopeOpened) return;
+        envelopeOpened = true;
+        
         opening.classList.add('hidden');
         main.classList.add('visible');
+        sessionStorage.setItem('envelopeOpened', 'true');
         
         setTimeout(function() {
             opening.style.display = 'none';
         }, 800);
-    };
+    }
     
     if (sessionStorage.getItem('envelopeOpened')) {
+        envelopeOpened = true;
         opening.classList.add('hidden');
         main.classList.add('visible');
         opening.style.display = 'none';
     }
     
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('open-btn')) {
-            sessionStorage.setItem('envelopeOpened', 'true');
+    window.openEnvelope = function() {
+        openEnvelope(true);
+    };
+    
+    if (opening && !envelopeOpened) {
+        setTimeout(function() {
+            openEnvelope(true);
+        }, 2000);
+        
+        document.addEventListener('touchstart', function() {
+            openEnvelope(true);
+        }, { once: true });
+        
+        document.addEventListener('scroll', function() {
+            openEnvelope(true);
+        }, { once: true });
+    }
+    
+    if (scrollIndicator && main) {
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const heroObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    scrollIndicator.style.opacity = '0';
+                    scrollIndicator.style.transition = 'opacity 0.3s ease';
+                } else {
+                    scrollIndicator.style.opacity = '0.6';
+                }
+            });
+        }, observerOptions);
+        
+        const hero = document.getElementById('hero');
+        if (hero) {
+            heroObserver.observe(hero);
         }
-    }, { once: true });
+    }
+    
+    function smoothScrollTo(target) {
+        const elem = document.querySelector(target);
+        if (!elem) return;
+        
+        const start = window.pageYOffset;
+        const elemTop = elem.getBoundingClientRect().top + start;
+        const startTime = performance.now();
+        const duration = 600;
+        
+        function animate(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            
+            window.scrollTo(0, start + (elemTop - start) * easeOut);
+            
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        }
+        
+        requestAnimationFrame(animate);
+    }
     
     window.addToCalendar = function() {
         const event = {
@@ -57,7 +122,9 @@
         const link = document.createElement('a');
         link.href = url;
         link.download = 'wedding-invitation.ics';
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
         URL.revokeObjectURL(url);
     };
     
@@ -90,32 +157,9 @@
             }).catch(function() {});
         } else if (navigator.clipboard) {
             navigator.clipboard.writeText(text).then(function() {
-                alert('복사되었습니 다!');
-            }).catch(function() {
-                kakaoLink(text);
-            });
-        } else {
-            kakaoLink(text);
+                alert('복사되었습니다!');
+            }).catch(function() {});
         }
     };
-    
-    function kakaoLink(text) {
-        const url = encodeURIComponent(window.location.href);
-        const kakaoUrl = 'https://kakaolink.line.me/action/share?url=' + url + '&text=' + encodeURIComponent(text);
-        window.location.href = kakaoUrl;
-    }
-    
-    var links = document.querySelectorAll('a[href^="http"]');
-    links.forEach(function(link) {
-        link.addEventListener('click', function(e) {
-            e.target.href;
-        });
-    });
-    
-    document.addEventListener('touchmove', function(e) {
-        if (e.target.closest('.rsvp-form')) {
-            e.stopPropagation();
-        }
-    }, { passive: true });
     
 })();
