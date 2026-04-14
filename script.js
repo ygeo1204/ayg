@@ -6,8 +6,9 @@
     const rsvpForm = document.getElementById('rsvpForm');
     const rsvpResult = document.getElementById('rsvpResult');
     let envelopeOpened = false;
+    let initialScrollDone = false;
     
-    function openEnvelope(auto) {
+    function openEnvelope() {
         if (envelopeOpened) return;
         envelopeOpened = true;
         
@@ -17,7 +18,8 @@
         
         setTimeout(function() {
             opening.style.display = 'none';
-        }, 800);
+            initScrollAnimation();
+        }, 600);
     }
     
     if (sessionStorage.getItem('envelopeOpened')) {
@@ -25,28 +27,58 @@
         opening.classList.add('hidden');
         main.classList.add('visible');
         opening.style.display = 'none';
+        
+        setTimeout(function() {
+            initScrollAnimation();
+        }, 100);
     }
     
     window.openEnvelope = function() {
-        openEnvelope(true);
+        openEnvelope();
     };
     
     if (opening && !envelopeOpened) {
-        setTimeout(function() {
-            openEnvelope(true);
-        }, 2000);
-        
         document.addEventListener('touchstart', function() {
-            openEnvelope(true);
+            openEnvelope();
         }, { once: true });
         
         document.addEventListener('scroll', function() {
-            openEnvelope(true);
+            openEnvelope();
         }, { once: true });
+        
+        setTimeout(function() {
+            if (!envelopeOpened) {
+                openEnvelope();
+            }
+        }, 2500);
+    }
+    
+    function initScrollAnimation() {
+        if (initialScrollDone) return;
+        initialScrollDone = true;
+        
+        var observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+        
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        var sections = document.querySelectorAll('.section-inner');
+        sections.forEach(function(section) {
+            observer.observe(section);
+        });
     }
     
     window.addToCalendar = function() {
-        const event = {
+        var event = {
             title: '어연걸 ♥ 김소정 결혼식',
             start: '20260920T132000',
             end: '20260920T150000',
@@ -54,7 +86,7 @@
             description: '2026년 9월 20일 일요일 오후 1시 20분'
         };
         
-        const icsContent = [
+        var icsContent = [
             'BEGIN:VCALENDAR',
             'VERSION:2.0',
             'PRODID:-//Wedding Invitation//EN',
@@ -68,9 +100,9 @@
             'END:VCALENDAR'
         ].join('\r\n');
         
-        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        var blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
         link.href = url;
         link.download = 'wedding-invitation.ics';
         document.body.appendChild(link);
@@ -83,8 +115,8 @@
         rsvpForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const formData = new FormData(rsvpForm);
-            const data = {
+            var formData = new FormData(rsvpForm);
+            var data = {
                 name: formData.get('guestName'),
                 attendance: formData.get('attendance'),
                 guests: formData.get('guests'),
@@ -99,8 +131,8 @@
     }
     
     window.copyRSVP = function() {
-        const data = window.rsvpData || { name: '', attendance: '' };
-        const text = '어연걸 ♥ 김소정 결혼식 참석 여부\n이름: ' + data.name + '\n참석: ' + (data.attendance === 'yes' ? '참석합니다' : '참석 불가능합니다');
+        var data = window.rsvpData || { name: '', attendance: '' };
+        var text = '어연걸 ♥ 김소정 결혼식 참석 여부\n이름: ' + data.name + '\n참석: ' + (data.attendance === 'yes' ? '참석합니다' : '참석 불가능합니다');
         
         if (navigator.share) {
             navigator.share({

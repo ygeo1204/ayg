@@ -1,12 +1,14 @@
 :root {
-    --primary: #1a1a2e;
-    --secondary: #16213e;
-    --accent: #c9a959;
-    --accent-light: #d4b876;
-    --text: #333;
-    --text-light: #666;
-    --bg: #faf9f7;
-    --bg-card: #fff;
+    --primary: #2c2c2c;
+    --secondary: #f5f3ef;
+    --accent: #b8a082;
+    --accent-dark: #9a8264;
+    --text: #3d3d3d;
+    --text-light: #7a7a7a;
+    --bg: #faf9f6;
+    --bg-card: #ffffff;
+    --beige: #f0ebe3;
+    --beige-light: #f7f4ed;
     --font-serif: 'Noto Serif KR', serif;
     --font-sans: 'Noto Sans KR', sans-serif;
 }
@@ -27,7 +29,7 @@ body {
     font-family: var(--font-sans);
     background: var(--bg);
     color: var(--text);
-    line-height: 1.6;
+    line-height: 1.7;
     overflow-x: hidden;
     overscroll-behavior: contain;
     touch-action: pan-y;
@@ -46,12 +48,12 @@ html, body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--primary);
+    background: linear-gradient(135deg, #faf9f6 0%, #f0ebe3 50%, #e8e2d8 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.6s ease;
+    transition: transform 0.8s cubic-bezier(0.77, 0, 0.18, 1), opacity 0.6s ease;
 }
 
 .opening.hidden {
@@ -62,59 +64,71 @@ html, body {
 
 .envelope {
     position: relative;
-    width: 280px;
-    height: 200px;
-    background: var(--accent);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-}
-
-.envelope-flap {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-    transform-origin: top;
-    transition: transform 0.5s ease;
-}
-
-.envelope-body {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 50%;
-    background: var(--bg-card);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 300px;
+    text-align: center;
+    padding: 40px;
 }
 
 .invite-text {
     text-align: center;
-    padding: 20px;
 }
 
 .couple-name {
     font-family: var(--font-serif);
-    font-size: 1.5rem;
+    font-size: 2.2rem;
     color: var(--primary);
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+    font-weight: 400;
 }
 
 .invite-message {
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 6px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+.open-btn {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 14px 40px;
     font-size: 0.85rem;
-    color: var(--text-light);
-    letter-spacing: 2px;
-    margin-bottom: 20px;
+    letter-spacing: 3px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-sans);
+}
+
+.open-btn:hover {
+    background: var(--primary);
+    color: #fff;
+}
+
+.divider {
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+    margin: 20px auto;
+}
+
+.divider-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: var(--accent);
+    font-size: 0.75rem;
+    letter-spacing: 4px;
 }
 
 .main-content {
     display: none;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.6s ease;
     min-height: 100%;
 }
 
@@ -125,27 +139,36 @@ html, body {
 
 .section {
     min-height: 100vh;
-    padding: 60px 20px;
+    padding: 80px 24px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
+    overflow: hidden;
 }
 
 .section-inner {
-    max-width: 480px;
+    max-width: 420px;
     width: 100%;
     text-align: center;
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.section-inner.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .hero {
-    background: var(--primary);
-    color: #fff;
+    background: linear-gradient(180deg, var(--beige-light) 0%, var(--bg) 100%);
+    color: var(--primary);
     min-height: 100vh;
     min-height: -webkit-fill-available;
     display: flex;
@@ -154,67 +177,83 @@ html, body {
     align-items: center;
 }
 
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="flowers" patternUnits="userSpaceOnUse" width="30" height="30"><circle cx="5" cy="5" r="1" fill="%23b8a082" opacity="0.15"/><circle cx="20" cy="20" r="1.5" fill="%23b8a082" opacity="0.1"/><circle cx="25" cy="8" r="0.8" fill="%23b8a082" opacity="0.12"/></pattern></defs><rect width="100" height="100" fill="url(%23flowers)"/></svg>');
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 .hero-content {
     text-align: center;
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
+    z-index: 1;
 }
 
 .hero-date {
-    font-size: 1.1rem;
-    letter-spacing: 4px;
-    margin-bottom: 20px;
-    opacity: 0.8;
+    font-size: 0.9rem;
+    letter-spacing: 6px;
+    margin-bottom: 24px;
+    color: var(--accent);
+    font-weight: 300;
 }
 
 .couple-names {
     font-family: var(--font-serif);
-    font-size: 2.5rem;
-    font-weight: 500;
-    margin-bottom: 16px;
-    line-height: 1.3;
+    font-size: 2.8rem;
+    font-weight: 400;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    letter-spacing: 4px;
 }
 
 .hero-invite {
-    font-size: 0.9rem;
-    letter-spacing: 3px;
-    opacity: 0.7;
+    font-size: 0.75rem;
+    letter-spacing: 6px;
+    color: var(--text-light);
+    text-transform: uppercase;
 }
-
-
 
 .greeting {
     background: var(--bg);
 }
 
 .greeting-label, .event-label, .gallery-label, .location-label, .rsvp-label {
-    font-size: 0.75rem;
-    letter-spacing: 3px;
+    font-size: 0.7rem;
+    letter-spacing: 4px;
     color: var(--accent);
-    margin-bottom: 12px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
 }
 
 .section-title {
     font-family: var(--font-serif);
-    font-size: 1.8rem;
-    font-weight: 500;
-    margin-bottom: 32px;
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin-bottom: 36px;
     color: var(--primary);
 }
 
 .greeting-text {
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 2;
-    margin-bottom: 40px;
+    margin-bottom: 44px;
     color: var(--text-light);
 }
 
 .couple-info-card {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 48px;
     flex-wrap: wrap;
 }
 
@@ -223,59 +262,64 @@ html, body {
 }
 
 .role {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--text-light);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .role .name {
     font-family: var(--font-serif);
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     color: var(--primary);
     margin-left: 8px;
+    font-weight: 400;
 }
 
 .parents {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text-light);
 }
 
 .event-info {
-    background: var(--bg);
+    background: var(--secondary);
 }
 
 .event-card {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
     margin-bottom: 32px;
 }
 
 .event-item {
     background: var(--bg-card);
     padding: 24px;
-    border-radius: 12px;
+    border-radius: 4px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 18px;
     text-align: left;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.03);
 }
 
 .event-icon {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     flex-shrink: 0;
 }
 
 .event-details h3 {
     font-family: var(--font-serif);
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-bottom: 4px;
     color: var(--primary);
+    font-weight: 400;
 }
 
 .event-date, .event-time, .event-location, .event-address {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-light);
 }
 
@@ -283,50 +327,51 @@ html, body {
     background: var(--primary);
     color: #fff;
     border: none;
-    padding: 14px 32px;
-    font-size: 0.95rem;
-    border-radius: 30px;
+    padding: 14px 36px;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    border-radius: 50px;
     cursor: pointer;
-    touch-action: manipulation;
+    font-family: var(--font-sans);
 }
 
 .gallery {
-    background: var(--secondary);
-    color: #fff;
-    min-height: 80vh;
+    background: var(--beige);
+    color: var(--primary);
+    min-height: 70vh;
 }
 
 .gallery-label {
-    color: var(--accent-light);
+    color: var(--accent-dark);
 }
 
 .gallery .section-title {
-    color: #fff;
+    color: var(--primary);
 }
 
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
 .gallery-item {
     aspect-ratio: 1;
-    background: rgba(255,255,255,0.1);
-    border-radius: 8px;
+    background: rgba(0,0,0,0.04);
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .gallery-placeholder {
-    font-size: 2rem;
-    opacity: 0.5;
+    font-size: 1.6rem;
+    opacity: 0.3;
 }
 
 .gallery-note {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     opacity: 0.5;
 }
 
@@ -340,18 +385,19 @@ html, body {
 
 .map-placeholder {
     background: var(--bg-card);
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    padding: 36px;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.03);
 }
 
 .map-placeholder p {
-    font-size: 1.1rem;
-    margin-bottom: 8px;
+    font-size: 1rem;
+    margin-bottom: 6px;
 }
 
 .address-detail {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-light);
 }
 
@@ -366,16 +412,15 @@ html, body {
     background: #FEE500;
     color: #3C1E1E;
     text-decoration: none;
-    padding: 12px 24px;
-    border-radius: 30px;
-    font-size: 0.9rem;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-size: 0.85rem;
     font-weight: 500;
-    touch-action: manipulation;
 }
 
 .rsvp {
-    background: var(--primary);
-    color: #fff;
+    background: var(--beige-light);
+    color: var(--primary);
 }
 
 .rsvp-label {
@@ -383,19 +428,19 @@ html, body {
 }
 
 .rsvp .section-title {
-    color: #fff;
+    color: var(--primary);
 }
 
 .rsvp-desc {
-    font-size: 0.95rem;
-    opacity: 0.8;
+    font-size: 0.9rem;
+    opacity: 0.7;
     margin-bottom: 32px;
 }
 
 .rsvp-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
     text-align: left;
 }
 
@@ -406,19 +451,20 @@ html, body {
 }
 
 .form-group label {
-    font-size: 0.85rem;
-    opacity: 0.8;
+    font-size: 0.8rem;
+    opacity: 0.6;
+    letter-spacing: 1px;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
-    padding: 14px 16px;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 8px;
-    background: rgba(255,255,255,0.1);
-    color: #fff;
-    font-size: 0.95rem;
+    padding: 14px 18px;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 4px;
+    background: var(--bg-card);
+    color: var(--text);
+    font-size: 0.9rem;
     font-family: var(--font-sans);
     transition: border-color 0.2s ease;
     -webkit-appearance: none;
@@ -427,7 +473,7 @@ html, body {
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-    color: rgba(255,255,255,0.4);
+    color: var(--text-light);
 }
 
 .form-group input:focus,
@@ -438,73 +484,74 @@ html, body {
 }
 
 .form-group select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23fff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a7a7a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 16px center;
     padding-right: 40px;
 }
 
 .form-group select option {
-    background: var(--primary);
-    color: #fff;
+    background: var(--bg-card);
+    color: var(--text);
 }
 
 .rsvp-submit-btn {
-    background: var(--accent);
-    color: var(--primary);
+    background: var(--primary);
+    color: #fff;
     border: none;
     padding: 16px;
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 30px;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    border-radius: 50px;
     cursor: pointer;
-    margin-top: 8px;
-    touch-action: manipulation;
+    margin-top: 10px;
+    font-family: var(--font-sans);
 }
 
 .rsvp-result {
     margin-top: 24px;
     padding: 20px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 12px;
+    background: var(--bg-card);
+    border-radius: 4px;
 }
 
 .rsvp-copy-btn {
     background: #FEE500;
     color: #3C1E1E;
     border: none;
-    padding: 12px 24px;
-    font-size: 0.9rem;
-    border-radius: 30px;
+    padding: 12px 28px;
+    font-size: 0.85rem;
+    border-radius: 50px;
     cursor: pointer;
     margin-top: 16px;
-    touch-action: manipulation;
 }
 
 .footer {
-    padding: 40px 20px;
+    padding: 48px 24px;
     text-align: center;
     background: var(--primary);
     color: #fff;
 }
 
 .footer p {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     margin-bottom: 8px;
+    letter-spacing: 2px;
 }
 
 .footer-date {
-    font-size: 0.8rem;
-    opacity: 0.6;
+    font-size: 0.75rem;
+    opacity: 0.5;
+    letter-spacing: 3px;
 }
 
 @media screen and (max-width: 480px) {
     .couple-names {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     
     .section {
-        padding: 50px 16px;
+        padding: 60px 20px;
     }
     
     .event-item {
@@ -519,15 +566,20 @@ html, body {
         width: 100%;
         text-align: center;
     }
+    
+    .envelope {
+        width: 260px;
+        padding: 30px;
+    }
+    
+    .couple-name {
+        font-size: 1.8rem;
+    }
 }
 
-@media screen and (max-height: 700px) {
+@media screen and (max-height: 650px) {
     .hero {
         min-height: auto;
         padding: 100px 20px 60px;
-    }
-    
-    .scroll-indicator {
-        display: none;
     }
 }
