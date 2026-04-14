@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#1a1a2e">
+    <meta name="theme-color" content="#faf9f6">
     <meta name="format-detection" content="telephone=no">
     
     <title>청첩장 | 어연걸 ♥ 김소정</title>
-    <meta name="description" content="2026년 9월 20일 일요일 오후 1시 20분, KU컨벤션웨딩홀에서挙げる婚礼에 초대합니다.">
+    <meta name="description" content="2026년 9월 20일 일요일 오후 1시 20분, KU컨벤션웨딩홀에서 결혼식에 초대합니다.">
     
     <meta property="og:title" content="청첩장 | 어연걸 ♥ 김소정">
     <meta property="og:description" content="2026년 9월 20일 일요일 오후 1시 20분">
@@ -23,14 +23,12 @@
 </head>
 <body>
     <div class="opening" id="opening">
-        <div class="envelope">
-            <div class="envelope-flap"></div>
-            <div class="envelope-body">
-                <div class="invite-text">
-                    <p class=" Couple-name">어연걸 ♥ 김소정</p>
-                    <p class="invite-message"> Wedding Invitation</p>
-                    <button class="open-btn" onclick="openEnvelope()">초대장 열기</button>
-                </div>
+        <div class="opening-content">
+            <div class="title-animate">
+                <p class="invite-couple">어연걸 ♥ 김소정</p>
+                <div class="divider-small"></div>
+                <h1 class="invite-title">결혼식에 초대합니다</h1>
+                <p class="invite-date">2026. 09. 20</p>
             </div>
         </div>
     </div>
@@ -38,11 +36,19 @@
     <main class="main-content" id="main">
         <section class="section hero" id="hero">
             <div class="hero-content">
-                <p class="hero-date">2026. 09. 20</p>
-                <h1 class=" Couple-names">어연걸 ♥ 김소정</h1>
-                <p class="hero-invite"> Wedding Ceremony</p>
+                <div class="countdown-box">
+                    <p class="countdown-label">D-DAY</p>
+                    <div class="countdown" id="countdown">
+                        <div class="countdown-item">
+                            <span class="countdown-num" id="days">000</span>
+                            <span class="countdown-unit">일</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="hero-date">2026. 09. 20 (일)</p>
+                <h1 class="couple-names">어연걸 ♥ 김소정</h1>
+                <p class="hero-invite">Wedding Ceremony</p>
             </div>
-            
         </section>
 
         <section class="section greeting" id="greeting">
@@ -50,18 +56,21 @@
                 <p class="greeting-label">INVITATION</p>
                 <h2 class="section-title">함께해주세요</h2>
                 <div class="greeting-text">
-                    <p>깊은 사랑으로 결혼합니다.</p>
-                    <p>저희 두 사람, 올림픽 결혼식을 진행하게 되었습니다.</p>
-                    <p>바쁘신 가운데 시간을 내주셔</p>
-                    <p>저희의 첫 걸음을 함께 해주세요.</p>
+                    <p> 깊은 사랑으로 결혼합니다.</p>
+                    <p> 저희 두 사람, 올림픽 결혼식을</p>
+                    <p> 진행하게 되었습니다.</p>
+                    <p> 바쁘신 가운데 시간을 내주셔</p>
+                    <p> 저희의 첫 걸음을 함께 해주세요.</p>
                 </div>
-                <div class=" couple-info-card">
+                <div class="couple-info-card">
                     <div class="person">
-                        <p class="role"> groom <span class="name">어연걸</span></p>
+                        <p class="role">Groom</p>
+                        <p class="name">어연걸</p>
                         <p class="parents">어연구 · 최숙자</p>
                     </div>
                     <div class="person">
-                        <p class="role"> bride <span class="name">김소정</span></p>
+                        <p class="role">Bride</p>
+                        <p class="name">김소정</p>
                         <p class="parents">김영호 · 이명화</p>
                     </div>
                 </div>
@@ -71,13 +80,13 @@
         <section class="section event-info" id="event">
             <div class="section-inner">
                 <p class="event-label">CEREMONY</p>
-                <h2 class="section-title">式的 정보</h2>
+                <h2 class="section-title">예식 정보</h2>
                 
                 <div class="event-card">
                     <div class="event-item">
                         <div class="event-icon">💒</div>
                         <div class="event-details">
-                            <h3> 결혼식</h3>
+                            <h3>결혼식</h3>
                             <p class="event-date">2026년 9월 20일 (일요일)</p>
                             <p class="event-time">오후 1시 20분</p>
                         </div>
@@ -114,15 +123,9 @@
                 <h2 class="section-title">함께한 순간들</h2>
                 
                 <div class="gallery-grid">
-                    <div class="gallery-item">
-                        <div class="gallery-placeholder">📷</div>
-                    </div>
-                    <div class="gallery-item">
-                        <div class="gallery-placeholder">📷</div>
-                    </div>
-                    <div class="gallery-item">
-                        <div class="gallery-placeholder">📷</div>
-                    </div>
+                    <div class="gallery-item"><div class="gallery-placeholder">📷</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">📷</div></div>
+                    <div class="gallery-item"><div class="gallery-placeholder">📷</div></div>
                 </div>
                 <p class="gallery-note">* wedding photos will be displayed here</p>
             </div>
@@ -139,14 +142,54 @@
                         <p class="address-detail">서울특별시</p>
                     </div>
                 </div>
+
+                <div class="transport-info">
+                    <div class="transport-group">
+                        <h3>🚇 대중교통</h3>
+                        <p>지하철 2호선 을지로입구역 5번 출구 도보 5분</p>
+                    </div>
+                    <div class="transport-group">
+                        <h3>🚗 자차 이용</h3>
+                        <p>웨딩홀 전용 주차장 이용 가능</p>
+                    </div>
+                    <div class="transport-group">
+                        <h3>🅿️ 주차</h3>
+                        <p>지하 2층 Guest Parking (무료)</p>
+                    </div>
+                </div>
                 
                 <div class="location-buttons">
-                    <a href="https://map.kakaom.com" class="location-btn" target="_blank" rel="noopener noreferrer">
-                        🗺️카카오맵
-                    </a>
-                    <a href="https://naver.me/maps" class="location-btn" target="_blank" rel="noopener noreferrer">
-                        🗺️네이버지도
-                    </a>
+                    <a href="https://map.kakaom.com" class="location-btn" target="_blank">🗺️카카오맵</a>
+                    <a href="https://naver.me/maps" class="location-btn" target="_blank">🗺️네이버지도</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section account" id="account">
+            <div class="section-inner">
+                <p class="account-label">GIFT</p>
+                <h2 class="section-title">마음 전하실 곳</h2>
+                <p class="account-desc">축하의 마음을 전하세요</p>
+                
+                <div class="account-card">
+                    <div class="account-item">
+                        <p class="account-role">신랑측</p>
+                        <p class="account-name">어연걸 (아버지)</p>
+                        <p class="account-bank">국민은행 123456-78901</p>
+                        <button class="copy-btn" onclick="copyAccount('12345678901')">복사</button>
+                    </div>
+                    <div class="account-item">
+                        <p class="account-role">신랑측</p>
+                        <p class="account-name">어연걸 (어머니)</p>
+                        <p class="account-bank">국민은행 123456-78902</p>
+                        <button class="copy-btn" onclick="copyAccount('12345678902')">복사</button>
+                    </div>
+                    <div class="account-item">
+                        <p class="account-role">신부측</p>
+                        <p class="account-name">김소정 (아버지)</p>
+                        <p class="account-bank">신한은행 987654-32100</p>
+                        <button class="copy-btn" onclick="copyAccount('98765432100')">복사</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -192,12 +235,14 @@
                 
                 <div class="rsvp-result" id="rsvpResult" style="display: none;">
                     <p>감사합니다! 제출되었습니다.</p>
-                    <button class="rsvp-copy-btn" onclick="copyRSVP()">카카오톡으로 공유하기</button>
                 </div>
             </div>
         </section>
 
         <footer class="footer">
+            <button class="share-btn" onclick="shareLink()">
+                🔗 링크 공유하기
+            </button>
             <p>어연걸 ♥ 김소정</p>
             <p class="footer-date">2026. 09. 20</p>
         </footer>

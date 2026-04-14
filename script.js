@@ -1,12 +1,30 @@
 (function() {
     'use strict';
     
-    const opening = document.getElementById('opening');
-    const main = document.getElementById('main');
-    const rsvpForm = document.getElementById('rsvpForm');
-    const rsvpResult = document.getElementById('rsvpResult');
-    let envelopeOpened = false;
-    let initialScrollDone = false;
+    var opening = document.getElementById('opening');
+    var main = document.getElementById('main');
+    var rsvpForm = document.getElementById('rsvpForm');
+    var rsvpResult = document.getElementById('rsvpResult');
+    var daysEl = document.getElementById('days');
+    var envelopeOpened = false;
+    var initialScrollDone = false;
+    
+    var WEDDING_DATE = new Date('2026-09-20T13:20:00');
+    
+    function updateCountdown() {
+        if (!daysEl) return;
+        
+        var now = new Date();
+        var diff = WEDDING_DATE - now;
+        
+        if (diff <= 0) {
+            daysEl.textContent = '000';
+            return;
+        }
+        
+        var days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        daysEl.textContent = days.toString().padStart(3, '0');
+    }
     
     function openEnvelope() {
         if (envelopeOpened) return;
@@ -18,6 +36,7 @@
         
         setTimeout(function() {
             opening.style.display = 'none';
+            updateCountdown();
             initScrollAnimation();
         }, 600);
     }
@@ -29,6 +48,7 @@
         opening.style.display = 'none';
         
         setTimeout(function() {
+            updateCountdown();
             initScrollAnimation();
         }, 100);
     }
@@ -51,6 +71,10 @@
                 openEnvelope();
             }
         }, 2500);
+        
+        setTimeout(function() {
+            updateCountdown();
+        }, 100);
     }
     
     function initScrollAnimation() {
@@ -111,6 +135,31 @@
         URL.revokeObjectURL(url);
     };
     
+    window.copyAccount = function(accountNum) {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(accountNum).then(function() {
+                alert('계좌번호가 복사되었습니다!');
+            }).catch(function() {});
+        }
+    };
+    
+    window.shareLink = function() {
+        var url = window.location.href;
+        var text = '어연걸 ♥ 김소정 결혼식 청첩장\n' + url;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: '청첩장 | 어연걸 ♥ 김소정',
+                text: text,
+                url: url
+            }).catch(function() {});
+        } else if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('링크가 복사되었습니다!');
+            }).catch(function() {});
+        }
+    };
+    
     if (rsvpForm) {
         rsvpForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -129,20 +178,5 @@
             window.rsvpData = data;
         });
     }
-    
-    window.copyRSVP = function() {
-        var data = window.rsvpData || { name: '', attendance: '' };
-        var text = '어연걸 ♥ 김소정 결혼식 참석 여부\n이름: ' + data.name + '\n참석: ' + (data.attendance === 'yes' ? '참석합니다' : '참석 불가능합니다');
-        
-        if (navigator.share) {
-            navigator.share({
-                text: text
-            }).catch(function() {});
-        } else if (navigator.clipboard) {
-            navigator.clipboard.writeText(text).then(function() {
-                alert('복사되었습니다!');
-            }).catch(function() {});
-        }
-    };
     
 })();
