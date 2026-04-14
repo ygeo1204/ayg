@@ -6,8 +6,13 @@
     var rsvpForm = document.getElementById('rsvpForm');
     var rsvpResult = document.getElementById('rsvpResult');
     var daysEl = document.getElementById('days');
+    var galleryModal = document.getElementById('galleryModal');
+    var gallerySlider = document.getElementById('gallerySlider');
+    var galleryIndexEl = document.getElementById('galleryIndex');
     var envelopeOpened = false;
     var initialScrollDone = false;
+    var currentSlide = 0;
+    var totalSlides = 3;
     
     var WEDDING_DATE = new Date('2026-09-20T13:20:00');
     
@@ -99,6 +104,45 @@
         sections.forEach(function(section) {
             observer.observe(section);
         });
+    }
+    
+    window.openGallery = function(index) {
+        currentSlide = index;
+        if (galleryModal) {
+            galleryModal.style.display = 'flex';
+            updateGalleryIndex();
+        }
+    };
+    
+    window.closeGallery = function() {
+        if (galleryModal) {
+            galleryModal.style.display = 'none';
+        }
+    };
+    
+    window.prevSlide = function(e) {
+        if (e) e.stopPropagation();
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateGallerySlide();
+    };
+    
+    window.nextSlide = function(e) {
+        if (e) e.stopPropagation();
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateGallerySlide();
+    };
+    
+    function updateGallerySlide() {
+        if (gallerySlider) {
+            gallerySlider.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
+        }
+        updateGalleryIndex();
+    }
+    
+    function updateGalleryIndex() {
+        if (galleryIndexEl) {
+            galleryIndexEl.textContent = (currentSlide + 1) + '/' + totalSlides;
+        }
     }
     
     window.addToCalendar = function() {
