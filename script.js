@@ -3,7 +3,6 @@
     
     const opening = document.getElementById('opening');
     const main = document.getElementById('main');
-    const scrollIndicator = document.querySelector('.scroll-indicator');
     const rsvpForm = document.getElementById('rsvpForm');
     const rsvpResult = document.getElementById('rsvpResult');
     let envelopeOpened = false;
@@ -44,54 +43,6 @@
         document.addEventListener('scroll', function() {
             openEnvelope(true);
         }, { once: true });
-    }
-    
-    if (scrollIndicator && main) {
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-        
-        const heroObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    scrollIndicator.style.opacity = '0';
-                    scrollIndicator.style.transition = 'opacity 0.3s ease';
-                } else {
-                    scrollIndicator.style.opacity = '0.6';
-                }
-            });
-        }, observerOptions);
-        
-        const hero = document.getElementById('hero');
-        if (hero) {
-            heroObserver.observe(hero);
-        }
-    }
-    
-    function smoothScrollTo(target) {
-        const elem = document.querySelector(target);
-        if (!elem) return;
-        
-        const start = window.pageYOffset;
-        const elemTop = elem.getBoundingClientRect().top + start;
-        const startTime = performance.now();
-        const duration = 600;
-        
-        function animate(currentTime) {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easeOut = 1 - Math.pow(1 - progress, 3);
-            
-            window.scrollTo(0, start + (elemTop - start) * easeOut);
-            
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            }
-        }
-        
-        requestAnimationFrame(animate);
     }
     
     window.addToCalendar = function() {
