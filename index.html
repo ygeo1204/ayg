@@ -5,215 +5,484 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>스페인 · 포르투갈 허니문 일정표</title>
 <style>
-  /* ===== 기본 리셋 & 모바일 퍼스트 ===== */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { -webkit-text-size-adjust: 100%; }
-  body {
-    font-family: -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', BlinkMacSystemFont, sans-serif;
-    font-size: 15px;
-    background: #f7f5f0;
-    color: #2c2c2a;
-    line-height: 1.6;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .container { max-width: 900px; margin: 0 auto; padding: 16px 14px 72px; }
+  /* ===== 전체 레이아웃 ===== */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; font-size: 14px; background: #f7f5f0; color: #2c2c2a; line-height: 1.6; }
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 20px 60px; }
 
   /* ===== 헤더 ===== */
-  .trip-header {
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 28px 16px 24px;
-    background: #fff;
-    border-radius: 16px;
-    border: 1px solid #e0ddd5;
-  }
-  .trip-title { font-size: 22px; font-weight: 700; color: #2c2c2a; margin-bottom: 4px; }
-  .trip-emoji { font-size: 28px; margin-bottom: 10px; }
-  .trip-sub { font-size: 13px; color: #888; margin-bottom: 16px; }
-  .trip-stats { display: flex; justify-content: center; gap: 0; }
-  .stat { text-align: center; flex: 1; padding: 0 4px; }
-  .stat-num { font-size: 20px; font-weight: 700; color: #1D9E75; }
-  .stat-label { font-size: 11px; color: #aaa; }
+  .trip-header { text-align: center; margin-bottom: 40px; padding: 36px 24px; background: #fff; border-radius: 16px; border: 1px solid #e0ddd5; }
+  .trip-title { font-size: 28px; font-weight: 700; color: #2c2c2a; margin-bottom: 6px; }
+  .trip-emoji { font-size: 32px; margin-bottom: 12px; }
+  .trip-sub { font-size: 15px; color: #888; margin-bottom: 16px; }
+  .trip-stats { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 700; color: #1D9E75; }
+  .stat-label { font-size: 12px; color: #aaa; }
 
   /* ===== 범례 ===== */
-  .legend { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-  .leg {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 12px; color: #555;
-    background: #fff; border: 1px solid #e0ddd5;
-    border-radius: 20px; padding: 4px 10px;
-  }
-  .leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .leg { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: #555; background: #fff; border: 1px solid #e0ddd5; border-radius: 20px; padding: 4px 10px; }
+  .leg-dot { width: 8px; height: 8px; border-radius: 50%; }
 
   /* ===== 도시 블록 ===== */
-  .city-block { margin-bottom: 16px; background: #fff; border-radius: 14px; border: 1px solid #e0ddd5; overflow: hidden; }
-
-  /* 도시 헤더: 2줄 레이아웃 */
-  .city-header {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 14px 16px;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-    active-color: transparent;
-  }
-  .city-header:active { background: #faf9f6; }
-  .city-header-top { display: flex; align-items: center; gap: 10px; }
-  .city-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .city-name { font-size: 17px; font-weight: 700; flex: 1; min-width: 0; }
-  .city-toggle { font-size: 18px; color: #bbb; transition: transform 0.25s; flex-shrink: 0; }
-  .city-toggle.open { transform: rotate(180deg); }
-  .city-header-sub { display: flex; align-items: center; gap: 8px; padding-left: 20px; }
-  .city-badge { font-size: 12px; color: #888; background: #f0ede6; border-radius: 20px; padding: 2px 9px; }
+  .city-block { margin-bottom: 28px; background: #fff; border-radius: 16px; border: 1px solid #e0ddd5; overflow: hidden; }
+  .city-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; cursor: pointer; user-select: none; }
+  .city-header:hover { background: #faf9f6; }
+  .city-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .city-name { font-size: 18px; font-weight: 700; flex: 1; }
+  .city-badge { font-size: 12px; color: #888; background: #f0ede6; border-radius: 20px; padding: 3px 10px; }
   .city-weather { font-size: 12px; color: #aaa; }
-
+  .city-toggle { font-size: 20px; color: #bbb; transition: transform 0.2s; }
+  .city-toggle.open { transform: rotate(180deg); }
   .city-body { display: none; border-top: 1px solid #f0ede6; }
   .city-body.open { display: block; }
 
   /* ===== 도시 소개 ===== */
-  .city-intro {
-    padding: 14px 16px;
-    background: #faf9f6;
-    border-bottom: 1px solid #f0ede6;
-    font-size: 13px; color: #555; line-height: 1.8;
-  }
+  .city-intro { padding: 16px 20px; background: #faf9f6; border-bottom: 1px solid #f0ede6; font-size: 13px; color: #555; line-height: 1.8; }
   .city-intro strong { color: #2c2c2a; }
 
-  /* ===== 날짜 섹션 ===== */
-  .day-section { padding: 14px 16px; border-bottom: 1px solid #f0ede6; }
+  /* ===== 날짜 카드 ===== */
+  .day-section { padding: 16px 20px; border-bottom: 1px solid #f0ede6; }
   .day-section:last-child { border-bottom: none; }
-
-  /* 날짜 행: 뱃지 + 텍스트 세로 배치 */
-  .day-title-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    cursor: pointer;
-    -webkit-user-select: none;
-    user-select: none;
-    min-height: 44px; /* iOS 터치 최소 높이 */
-  }
-  .day-label {
-    font-size: 11px; font-weight: 700; color: #fff;
-    background: #888; border-radius: 5px;
-    padding: 3px 9px; flex-shrink: 0;
-    margin-top: 2px;
-    white-space: nowrap;
-  }
+  .day-title-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer; }
+  .day-label { font-size: 13px; font-weight: 700; color: #fff; background: #888; border-radius: 6px; padding: 2px 10px; flex-shrink: 0; }
   .day-label.transfer { background: #d4930e; }
-  .day-label.free     { background: #1D9E75; }
-  .day-label.tour     { background: #378ADD; }
-  .day-label.mix      { background: #7F77DD; }
-
-  .day-title-main { flex: 1; min-width: 0; }
-  .day-desc {
-    font-size: 14px; font-weight: 600; color: #2c2c2a;
-    word-break: keep-all; line-height: 1.5;
-  }
-  .day-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
-  .tag { font-size: 11px; padding: 2px 7px; border-radius: 4px; border: 1px solid; white-space: nowrap; }
-  .tag-tour     { background: #EBF4FF; color: #1a5fa0; border-color: #b3d4f4; }
-  .tag-free     { background: #E8F8F2; color: #0e7a55; border-color: #9ee3c8; }
+  .day-label.free { background: #1D9E75; }
+  .day-label.tour { background: #378ADD; }
+  .day-label.mix { background: #7F77DD; }
+  .day-desc { font-size: 14px; font-weight: 600; color: #2c2c2a; flex: 1; }
+  .day-tags { display: flex; gap: 4px; flex-shrink: 0; }
+  .tag { font-size: 11px; padding: 2px 7px; border-radius: 4px; border: 1px solid; }
+  .tag-tour { background: #EBF4FF; color: #1a5fa0; border-color: #b3d4f4; }
+  .tag-free { background: #E8F8F2; color: #0e7a55; border-color: #9ee3c8; }
   .tag-transfer { background: #FFF7E0; color: #a06d00; border-color: #f5d470; }
-  .tag-snap     { background: #F0FFF4; color: #276435; border-color: #86d9a0; }
-
-  .day-chevron { font-size: 16px; color: #ccc; flex-shrink: 0; margin-top: 2px; transition: transform 0.2s; }
-  .day-chevron.open { transform: rotate(180deg); }
-
-  .day-content { display: none; margin-top: 14px; }
+  .tag-snap { background: #F0FFF4; color: #276435; border-color: #86d9a0; }
+  .day-content { display: none; margin-top: 12px; }
   .day-content.open { display: block; }
 
-  /* ===== 정보 그리드 — 모바일은 1열 ===== */
-  .info-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 14px; }
-  .info-box { background: #faf9f6; border-radius: 8px; border: 1px solid #e8e4dc; padding: 11px 13px; }
+  /* ===== 정보 그리드 ===== */
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .info-box { background: #faf9f6; border-radius: 8px; border: 1px solid #e8e4dc; padding: 10px 13px; }
   .info-box-label { font-size: 11px; color: #aaa; margin-bottom: 3px; }
-  .info-box-val { font-size: 13px; color: #2c2c2a; line-height: 1.6; }
+  .info-box-val { font-size: 13px; color: #2c2c2a; line-height: 1.5; }
 
   /* ===== 명소 리스트 ===== */
-  .section-sub {
-    font-size: 11px; font-weight: 700; color: #bbb;
-    text-transform: uppercase; letter-spacing: .06em;
-    margin: 14px 0 8px;
-  }
+  .section-sub { font-size: 12px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: .06em; margin: 12px 0 8px; }
   .spot-list { list-style: none; }
-  .spot-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f0ede6; }
+  .spot-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0ede6; }
   .spot-item:last-child { border-bottom: none; }
-  .spot-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
-  .spot-name { font-size: 14px; font-weight: 700; color: #2c2c2a; }
-  .spot-desc { font-size: 13px; color: #666; margin-top: 3px; line-height: 1.65; word-break: keep-all; }
+  .spot-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .spot-name { font-size: 13px; font-weight: 700; color: #2c2c2a; }
+  .spot-desc { font-size: 12px; color: #666; margin-top: 2px; line-height: 1.6; }
 
-  /* ===== 맛집 카드 — 모바일은 1열 ===== */
-  .food-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
-  .food-card { background: #faf9f6; border-radius: 8px; border: 1px solid #e8e4dc; padding: 12px 13px; }
-  .food-name { font-size: 14px; font-weight: 700; color: #2c2c2a; margin-bottom: 4px; }
-  .food-desc { font-size: 13px; color: #666; line-height: 1.65; word-break: keep-all; }
-  .food-price { font-size: 13px; color: #1D9E75; margin-top: 5px; font-weight: 600; }
-  .food-where { font-size: 12px; color: #aaa; margin-top: 2px; }
+  /* ===== 맛집 카드 ===== */
+  .food-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .food-card { background: #faf9f6; border-radius: 8px; border: 1px solid #e8e4dc; padding: 10px 13px; }
+  .food-name { font-size: 13px; font-weight: 700; color: #2c2c2a; margin-bottom: 4px; }
+  .food-desc { font-size: 12px; color: #666; line-height: 1.6; }
+  .food-price { font-size: 12px; color: #1D9E75; margin-top: 4px; font-weight: 600; }
+  .food-where { font-size: 11px; color: #aaa; margin-top: 2px; }
 
   /* ===== 꿀팁 박스 ===== */
-  .tip-box {
-    background: #EBF4FF; border-left: 3px solid #378ADD;
-    border-radius: 0 8px 8px 0;
-    padding: 11px 13px; margin-top: 12px;
-    font-size: 13px; color: #1a4a7a; line-height: 1.75;
-    word-break: keep-all;
-  }
-  .warn-box {
-    background: #FFF7E0; border-left: 3px solid #d4930e;
-    border-radius: 0 8px 8px 0;
-    padding: 11px 13px; margin-top: 12px;
-    font-size: 13px; color: #7a4f00; line-height: 1.75;
-    word-break: keep-all;
-  }
-  .tip-label { font-weight: 700; margin-bottom: 3px; }
+  .tip-box { background: #EBF4FF; border-left: 3px solid #378ADD; border-radius: 0 8px 8px 0; padding: 10px 13px; margin-top: 10px; font-size: 13px; color: #1a4a7a; line-height: 1.7; }
+  .warn-box { background: #FFF7E0; border-left: 3px solid #d4930e; border-radius: 0 8px 8px 0; padding: 10px 13px; margin-top: 10px; font-size: 13px; color: #7a4f00; line-height: 1.7; }
+  .tip-label { font-weight: 700; margin-bottom: 2px; }
 
   /* ===== 호텔 ===== */
-  .hotel-row {
-    display: flex; align-items: flex-start; gap: 8px;
-    padding: 12px 16px;
-    background: #f7f5f0; font-size: 13px; color: #666;
-    border-top: 1px solid #f0ede6;
-    word-break: keep-all; line-height: 1.6;
-  }
-  .hotel-icon { font-size: 16px; flex-shrink: 0; }
+  .hotel-row { display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: #f7f5f0; font-size: 13px; color: #666; border-top: 1px solid #f0ede6; }
+  .hotel-icon { font-size: 16px; }
 
-  /* ===== 체크리스트 ===== */
-  .checklist {
-    margin-top: 20px; padding: 18px 16px;
-    background: #fff; border-radius: 12px;
-    border: 1px solid #e0ddd5;
-    font-size: 13px; color: #666; line-height: 2;
-    word-break: keep-all;
-  }
-  .checklist-title { font-weight: 700; color: #2c2c2a; margin-bottom: 8px; font-size: 14px; }
-  .checklist-note { font-size: 12px; color: #aaa; margin-top: 8px; line-height: 1.7; }
+  /* ===== 반응형 (모바일) ===== */
+  @media (max-width: 600px) {
+    /* 전체 여백 */
+    .container { padding: 16px 12px 80px; }
 
-  /* ===== 태블릿·데스크톱 ===== */
-  @media (min-width: 540px) {
-    .container { padding: 24px 20px 72px; }
-    .trip-title { font-size: 26px; }
-    .info-grid { grid-template-columns: 1fr 1fr; }
-    .food-grid { grid-template-columns: 1fr 1fr; }
-    .city-header { flex-direction: row; align-items: center; padding: 16px 20px; gap: 12px; }
-    .city-header-top { flex: 1; min-width: 0; }
-    .city-header-sub { padding-left: 0; }
-    .city-name { font-size: 18px; }
+    /* 헤더 */
+    .trip-header { padding: 24px 16px; border-radius: 12px; margin-bottom: 16px; }
+    .trip-title { font-size: 20px; }
+    .trip-emoji { font-size: 26px; margin-bottom: 8px; }
+    .trip-sub { font-size: 13px; margin-bottom: 12px; }
+    .trip-stats { gap: 10px; }
+    .stat-num { font-size: 18px; }
+    .stat-label { font-size: 11px; }
+
+    /* 범례 */
+    .legend { gap: 6px; margin-bottom: 16px; }
+    .leg { font-size: 11px; padding: 3px 8px; }
+
+    /* 도시 블록 */
+    .city-block { margin-bottom: 16px; border-radius: 12px; }
+    .city-header { padding: 14px 16px; gap: 10px; min-height: 52px; }
+    .city-name { font-size: 15px; }
+    .city-badge { font-size: 11px; padding: 2px 8px; }
+    .city-weather { display: none; }
+
+    /* 도시 소개 */
+    .city-intro { padding: 12px 16px; font-size: 12px; }
+
+    /* 날짜 카드 */
+    .day-section { padding: 12px 16px; }
+    .day-title-row { gap: 6px; min-height: 44px; }
+    .day-label { font-size: 11px; padding: 2px 8px; }
+    .day-desc { font-size: 13px; }
+    .day-tags { display: none; }
+    .day-content { margin-top: 10px; }
+
+    /* 정보 그리드 */
+    .info-grid, .food-grid { grid-template-columns: 1fr; gap: 6px; margin-bottom: 10px; }
+    .info-box { padding: 9px 12px; }
+    .info-box-label { font-size: 10px; }
+    .info-box-val { font-size: 12px; }
+
+    /* 섹션 타이틀 */
+    .section-sub { font-size: 11px; margin: 10px 0 6px; }
+
+    /* 명소 리스트 */
+    .spot-item { gap: 8px; padding: 8px 0; }
+    .spot-icon { font-size: 16px; }
+    .spot-name { font-size: 13px; }
+    .spot-desc { font-size: 12px; line-height: 1.5; }
+
+    /* 음식 칩 */
+    .food-near { gap: 4px; margin-top: 5px; }
+    .food-near-chip { font-size: 11px; padding: 3px 7px; border-radius: 8px; }
+
+    /* 맛집 카드 */
+    .food-card { padding: 9px 12px; }
+    .food-name { font-size: 12px; }
+    .food-desc { font-size: 11px; }
+    .food-price { font-size: 11px; }
+    .food-where { font-size: 10px; }
+
+    /* 꿀팁/경고 박스 */
+    .tip-box, .warn-box { font-size: 12px; padding: 9px 12px; margin-top: 8px; }
+
+    /* 호텔 행 */
+    .hotel-row { padding: 10px 16px; font-size: 12px; }
+
+    /* 이동 동선 */
+    .travel-flow {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+      margin: 8px -4px 0;
+      padding-left: 4px;
+      scrollbar-width: none;
+    }
+    .travel-flow::-webkit-scrollbar { display: none; }
+    .tf-stop { font-size: 11px; padding: 3px 8px; white-space: nowrap; }
+    .tf-arrow { font-size: 10px; white-space: nowrap; }
+    .tf-time { font-size: 9px; }
+
+    /* 캐리어 주의 박스 */
+    .luggage-box { font-size: 12px; padding: 9px 12px; }
+
+    /* 편집 툴바 */
+    .edit-toolbar { bottom: 16px; right: 12px; gap: 6px; }
+    .edit-btn { padding: 9px 14px; font-size: 13px; }
+
+    /* 타임라인 */
+    .trip-timeline-section { margin-bottom: 16px; }
+    .trip-timeline-header { padding: 12px 16px; }
+    .trip-timeline-title { font-size: 13px; }
+    .trip-timeline-body { padding: 14px 14px; }
+    .tl-left { width: 46px; }
+    .tl-day { font-size: 9px; }
+    .tl-date { font-size: 11px; }
+    .tl-city { font-size: 12px; }
+    .tl-desc { font-size: 11px; }
+    .tl-transport { font-size: 10px; padding: 2px 7px; }
+    .tl-right { padding-bottom: 12px; }
+    .tl-row:not(:last-child)::before { left: 27px; }
+
+    /* 구글맵 버튼 */
+    .spot-map-link { font-size: 10px; padding: 1px 5px; }
+    .city-map-btn { font-size: 10px; padding: 2px 7px; }
   }
 
-  @media (min-width: 768px) {
-    .container { padding: 32px 24px 80px; }
-  }
-
-  /* ===== 인쇄 ===== */
+  /* ===== 수정 안내 주석 (인쇄 숨김) ===== */
   @media print {
-    .city-body, .day-content { display: block !important; }
-    .day-chevron { display: none; }
+    .edit-guide { display: none; }
+    .edit-toolbar { display: none !important; }
+    .city-body { display: block !important; }
+    .day-content { display: block !important; }
   }
+
+  /* ===== 전체 일정 타임라인 ===== */
+  .trip-timeline-section {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e0ddd5;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .trip-timeline-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .trip-timeline-header:hover { background: #faf9f6; }
+  .trip-timeline-title { font-size: 15px; font-weight: 700; color: #2c2c2a; }
+  .trip-timeline-body { display: none; border-top: 1px solid #f0ede6; padding: 20px; }
+  .trip-timeline-body.open { display: block; }
+
+  .tl-row {
+    display: flex;
+    gap: 12px;
+    position: relative;
+  }
+  .tl-row:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 33px;
+    top: 28px;
+    bottom: -4px;
+    width: 2px;
+    background: #f0ede6;
+  }
+  .tl-left {
+    flex-shrink: 0;
+    width: 58px;
+    text-align: right;
+    padding-top: 6px;
+  }
+  .tl-day {
+    font-size: 10px;
+    font-weight: 700;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .tl-date { font-size: 12px; font-weight: 700; color: #555; }
+  .tl-dot-wrap {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 6px;
+  }
+  .tl-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2.5px solid #fff;
+    box-shadow: 0 0 0 2px currentColor;
+    flex-shrink: 0;
+  }
+  .tl-right { flex: 1; padding: 4px 0 16px; }
+  .tl-city {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2c2c2a;
+    margin-bottom: 2px;
+  }
+  .tl-desc { font-size: 12px; color: #666; line-height: 1.6; }
+  .tl-transport {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 4px;
+  }
+
+  /* ===== 명소 구글맵 링크 ===== */
+  .spot-map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    color: #4285F4;
+    text-decoration: none;
+    margin-left: 6px;
+    padding: 1px 6px;
+    border: 1px solid #c5d8fb;
+    border-radius: 10px;
+    background: #f0f5ff;
+    vertical-align: middle;
+    white-space: nowrap;
+    transition: background 0.12s;
+  }
+  .spot-map-link:hover { background: #dde8fd; }
+
+  /* ===== 도시 헤더 지도 버튼 ===== */
+  .city-map-btn {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    background: #f0f5ff;
+    color: #4285F4;
+    border: 1px solid #c5d8fb;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: inherit;
+    flex-shrink: 0;
+    transition: background 0.12s;
+  }
+  .city-map-btn:hover { background: #dde8fd; }
+
+  /* ===== 편집 툴바 ===== */
+  .edit-toolbar {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 9999;
+  }
+  .edit-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    transition: transform 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .edit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+  .edit-btn:active { transform: translateY(0); }
+  .btn-toggle { background: #2c2c2a; color: #fff; }
+  .btn-toggle.active { background: #1D9E75; color: #fff; }
+  .btn-save { background: #378ADD; color: #fff; }
+  .btn-add-spot { background: #7F77DD; color: #fff; }
+
+  /* ===== 편집 모드 스타일 ===== */
+  body.edit-mode [contenteditable="true"] {
+    outline: 2px dashed #1D9E75;
+    outline-offset: 2px;
+    border-radius: 3px;
+    cursor: text;
+    min-width: 20px;
+    min-height: 1em;
+  }
+  body.edit-mode [contenteditable="true"]:focus {
+    outline: 2px solid #1D9E75;
+    background: rgba(29,158,117,0.05);
+  }
+  body.edit-mode [contenteditable="true"]:empty::before {
+    content: attr(data-placeholder);
+    color: #bbb;
+    font-style: italic;
+  }
+  .edit-mode-banner {
+    display: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #1D9E75;
+    color: #fff;
+    text-align: center;
+    padding: 8px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  body.edit-mode .edit-mode-banner { display: block; }
+
+  /* ===== 삭제 버튼 (편집 모드) ===== */
+  body.edit-mode .spot-item,
+  body.edit-mode .food-card,
+  body.edit-mode .day-section {
+    position: relative;
+  }
+  .delete-btn {
+    display: none;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #e74c3c;
+    color: #fff;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    font-weight: 700;
+    z-index: 10;
+    padding: 0;
+  }
+  body.edit-mode .delete-btn { display: block; }
+
+/* ===== 이동 동선 플로우 ===== */
+.travel-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin: 10px 0;
+  font-size: 12px;
+}
+.tf-stop {
+  background: #f0ede6;
+  border-radius: 8px;
+  padding: 4px 9px;
+  font-weight: 600;
+  color: #2c2c2a;
+  white-space: nowrap;
+}
+.tf-arrow {
+  color: #aaa;
+  font-size: 11px;
+  white-space: nowrap;
+  padding: 0 2px;
+}
+.tf-time {
+  font-size: 10px;
+  color: #888;
+}
+/* ===== 캐리어 주의 박스 ===== */
+.luggage-box {
+  background: #fff8f0;
+  border-left: 3px solid #e07a30;
+  border-radius: 0 8px 8px 0;
+  padding: 10px 13px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #7a3a00;
+  line-height: 1.7;
+}
+.luggage-box .tip-label { font-weight: 700; margin-bottom: 3px; }
+
+/* ===== 명소 근처 음식/맛집 추천 ===== */
+.food-near {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+.food-near-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  background: #fff8f0;
+  border: 1px solid #f5d0a9;
+  border-radius: 10px;
+  padding: 3px 8px;
+  color: #7a3a00;
+  line-height: 1.4;
+}
+.food-near-chip strong { color: #c45e00; }
 </style>
 </head>
 <body>
+<div class="edit-mode-banner">✏️ 편집 모드 ON — 텍스트를 클릭해서 바로 수정하세요. 완료 후 💾 저장 버튼을 누르세요.</div>
 <div class="container">
 
 <!-- ==================== 수정 방법 안내 ====================
@@ -251,6 +520,221 @@
   </div>
 </div>
 
+<!-- ===== 전체 일정 타임라인 ===== -->
+<div class="trip-timeline-section">
+  <div class="trip-timeline-header" onclick="toggleTimeline(this)">
+    <div class="trip-timeline-title">📅 전체 일정 타임라인</div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="font-size:12px;color:#aaa" class="tl-toggle-label">클릭해서 펼치기</span>
+      <span style="font-size:18px;color:#bbb;transition:transform 0.2s" class="tl-toggle-arrow">▼</span>
+    </div>
+  </div>
+  <div class="trip-timeline-body">
+
+    <!-- D1 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D1</div><div class="tl-date">9/21<br>월</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#378ADD;background:#378ADD"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">✈️ 인천 → 바르셀로나</div>
+        <div class="tl-desc">OZ511 · 인천 11:50 출발 → 바르셀로나 19:10 도착<br>1커플 단독 픽업 · 호텔 체크인 · 휴식</div>
+        <span class="tl-transport" style="background:#EBF4FF;color:#1a5fa0">✈️ 국제선</span>
+      </div>
+    </div>
+
+    <!-- D2 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D2</div><div class="tl-date">9/22<br>화</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#1D9E75;background:#1D9E75"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">✈️ 바르셀로나 → 🇵🇹 포르투 <span style="font-weight:400;color:#888">1박</span></div>
+        <div class="tl-desc">부엘링 15:10→16:10 · 오전 람블라스·보케리아 자유관광<br>포르투 도착 후 히베이라 강변·렐루 서점</div>
+        <span class="tl-transport" style="background:#EBF4FF;color:#1a5fa0">✈️ 부엘링 (위탁 25kg)</span>
+      </div>
+    </div>
+
+    <!-- D3 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D3</div><div class="tl-date">9/23<br>수</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#1D9E75;background:#1D9E75"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🇵🇹 포르투 <span style="font-weight:400;color:#888">2박</span></div>
+        <div class="tl-desc">전일 자유관광 · 스냅촬영 선택<br>포르투 대성당 · 가이아 와이너리 · 모루 정원</div>
+        <span class="tl-transport" style="background:#E8F8F2;color:#0e7a55">🟢 자유관광</span>
+        <span class="tl-transport" style="background:#F0FFF4;color:#276435">📸 스냅촬영 선택</span>
+      </div>
+    </div>
+
+    <!-- D4 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D4</div><div class="tl-date">9/24<br>목</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#1D9E75;background:#1D9E75"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🇵🇹 포르투 <span style="font-weight:400;color:#888">3박</span></div>
+        <div class="tl-desc">전일 자유관광<br>볼량 시장 · 상 벤투 기차역 · 클레리구스 탑 · 도우루 강 크루즈</div>
+        <span class="tl-transport" style="background:#E8F8F2;color:#0e7a55">🟢 자유관광</span>
+      </div>
+    </div>
+
+    <!-- D5 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D5</div><div class="tl-date">9/25<br>금</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#1D9E75;background:#1D9E75"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🇵🇹 포르투 <span style="font-weight:400;color:#888">4박</span></div>
+        <div class="tl-desc">전일 자유관광 · 리스본 이동 준비<br>세라 두 필라르 수도원 전망대 · 카페 여유</div>
+        <span class="tl-transport" style="background:#E8F8F2;color:#0e7a55">🟢 자유관광</span>
+      </div>
+    </div>
+
+    <!-- D6 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D6</div><div class="tl-date">9/26<br>토</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#1D9E75;background:#1D9E75"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🚂 포르투 → 🇵🇹 리스본 <span style="font-weight:400;color:#888">1박</span></div>
+        <div class="tl-desc">캄파냐역 출발 → 산타 아폴로니아역 도착 (약 3시간, 스케줄 오픈 전)<br>오전 클레리구스 탑 마지막 뷰 → 오후 벨렘 지구</div>
+        <span class="tl-transport" style="background:#FFF7E0;color:#a06d00">🚂 열차</span>
+      </div>
+    </div>
+
+    <!-- D7 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D7</div><div class="tl-date">9/27<br>일</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#1D9E75;background:#1D9E75"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🇵🇹 리스본 <span style="font-weight:400;color:#888">2박</span></div>
+        <div class="tl-desc">전일 자유관광<br>28번 트램 · 상 조르제 성 · 알파마 골목 · 파두 바</div>
+        <span class="tl-transport" style="background:#E8F8F2;color:#0e7a55">🟢 자유관광</span>
+      </div>
+    </div>
+
+    <!-- D8 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D8</div><div class="tl-date">9/28<br>월</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#1D9E75;background:#1D9E75"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🇵🇹 리스본 <span style="font-weight:400;color:#888">3박</span></div>
+        <div class="tl-desc">전일 자유관광<br>코메르시우 광장 · 타임아웃 마켓 · 신트라 당일치기 선택</div>
+        <span class="tl-transport" style="background:#E8F8F2;color:#0e7a55">🟢 자유관광</span>
+      </div>
+    </div>
+
+    <!-- D9 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D9</div><div class="tl-date">9/29<br>화</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#d4930e;background:#d4930e"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">✈️ 리스본 → 🇪🇸 세비야 <span style="font-weight:400;color:#888">1박</span></div>
+        <div class="tl-desc">라이언에어 13:40→15:45 · 오전 코메르시우 광장 마지막 산책<br>세비야 도착 후 알라메다 광장 저녁</div>
+        <span class="tl-transport" style="background:#EBF4FF;color:#1a5fa0">✈️ 라이언에어 (위탁 20kg)</span>
+      </div>
+    </div>
+
+    <!-- D10 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D10</div><div class="tl-date">9/30<br>수</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#d4930e;background:#d4930e"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🇪🇸 세비야 <span style="font-weight:400;color:#888">2박</span></div>
+        <div class="tl-desc">전일 자유관광<br>알카사르 왕궁 · 세비야 대성당 · 스페인 광장 · 플라멩코 공연</div>
+        <span class="tl-transport" style="background:#E8F8F2;color:#0e7a55">🟢 자유관광</span>
+      </div>
+    </div>
+
+    <!-- D11 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D11</div><div class="tl-date">10/1<br>목</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#d4930e;background:#d4930e"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🇪🇸 세비야 오전 → 론다 투어 <span style="font-weight:400;color:#888">1박</span></div>
+        <div class="tl-desc">오전 알카사르·대성당 자유관광 → 15:00 자하라 호수 & 론다 가이드 투어<br>론다 누에보 다리 야경 → 론다 체크인</div>
+        <span class="tl-transport" style="background:#FFF7E0;color:#a06d00">🚌 가이드 투어 15:00</span>
+      </div>
+    </div>
+
+    <!-- D12 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D12</div><div class="tl-date">10/2<br>금</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#d4930e;background:#d4930e"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🚂 론다 → 🇪🇸 그라나다 <span style="font-weight:400;color:#888">1박</span></div>
+        <div class="tl-desc">07:00 누에보 다리 일출 촬영 → 체크아웃 → 열차/버스 이동 (스케줄 오픈 전)<br>그라나다 도착 → 산 니콜라스 전망대 저녁</div>
+        <span class="tl-transport" style="background:#FFF7E0;color:#a06d00">🚂 열차/버스</span>
+      </div>
+    </div>
+
+    <!-- D13 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D13</div><div class="tl-date">10/3<br>토</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#7F77DD;background:#7F77DD"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🏰 알함브라 투어 → ✈️ 바르셀로나 <span style="font-weight:400;color:#888">1박</span></div>
+        <div class="tl-desc">알함브라 가이드 투어 (오전 9시 or 오후 2시, 약 4시간)<br>부엘링 19:30→21:00 · 바르셀로나 1커플 단독 픽업</div>
+        <span class="tl-transport" style="background:#FFF7E0;color:#a06d00">🏰 가이드 투어</span>
+        <span class="tl-transport" style="background:#EBF4FF;color:#1a5fa0">✈️ 부엘링 (위탁 25kg)</span>
+      </div>
+    </div>
+
+    <!-- D14 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D14</div><div class="tl-date">10/4<br>일</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#7F77DD;background:#7F77DD"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🇪🇸 바르셀로나 <span style="font-weight:400;color:#888">2박</span></div>
+        <div class="tl-desc">가우디 투어 09:00–13:00 + 허니문 스냅 촬영<br>까사 바트요 · 까사 밀라 · 구엘 공원 · 사그라다 파밀리아</div>
+        <span class="tl-transport" style="background:#FFF7E0;color:#a06d00">🎨 가이드 투어</span>
+        <span class="tl-transport" style="background:#F0FFF4;color:#276435">📸 스냅촬영</span>
+      </div>
+    </div>
+
+    <!-- D15 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D15</div><div class="tl-date">10/5<br>월</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#7F77DD;background:#7F77DD"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🇪🇸 바르셀로나 <span style="font-weight:400;color:#888">3박</span></div>
+        <div class="tl-desc">전일 자유관광<br>고딕 지구 · 바르셀로네타 해변 · 피카소 미술관</div>
+        <span class="tl-transport" style="background:#E8F8F2;color:#0e7a55">🟢 자유관광</span>
+      </div>
+    </div>
+
+    <!-- D16 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D16</div><div class="tl-date">10/6<br>화</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#7F77DD;background:#7F77DD"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🇪🇸 바르셀로나 <span style="font-weight:400;color:#888">4박</span></div>
+        <div class="tl-desc">전일 자유관광<br>보케리아 시장 · 몬주익 매직 분수 · 벨 항구</div>
+        <span class="tl-transport" style="background:#E8F8F2;color:#0e7a55">🟢 자유관광</span>
+      </div>
+    </div>
+
+    <!-- D17 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D17</div><div class="tl-date">10/7<br>수</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#7F77DD;background:#7F77DD"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🇪🇸 바르셀로나 → ✈️ 귀국 출발</div>
+        <div class="tl-desc">오전 람블라스·고딕 지구 → 점심 파에야 → 엘 코르테 잉글레스 쇼핑<br>17:00 공항 출발 → OZ512 20:50 탑승</div>
+        <span class="tl-transport" style="background:#EBF4FF;color:#1a5fa0">✈️ 국제선 OZ512</span>
+      </div>
+    </div>
+
+    <!-- D18 -->
+    <div class="tl-row">
+      <div class="tl-left"><div class="tl-day">D18</div><div class="tl-date">10/8<br>목</div></div>
+      <div class="tl-dot-wrap"><div class="tl-dot" style="color:#378ADD;background:#378ADD"></div></div>
+      <div class="tl-right">
+        <div class="tl-city">🏠 인천 도착</div>
+        <div class="tl-desc">인천 국제공항 16:20 도착</div>
+        <span class="tl-transport" style="background:#EBF4FF;color:#1a5fa0">✈️ OZ512 도착</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- ===== 범례 ===== -->
 <div class="legend">
   <div class="leg"><div class="leg-dot" style="background:#378ADD"></div> 이동일</div>
@@ -263,26 +747,34 @@
 <!-- ============================================================ -->
 <!-- ==================== 1. 바르셀로나 (경유) ==================== -->
 <!-- ============================================================ -->
-<div class="city-block">
+<div class="city-block" data-city="Barcelona Spain">
   <div class="city-header" onclick="toggleCity(this)">
-    <div class="city-header-top"><div class="city-dot" style="background:#378ADD"></div><div class="city-name">🇪🇸 바르셀로나 — 도착</div><div class="city-toggle">▼</div></div>
-    <div class="city-header-sub"><div class="city-badge">9/21 · 1박</div><div class="city-weather">☀️ 23°C</div></div>
+    <div class="city-dot" style="background:#378ADD"></div>
+    <div class="city-name">🇪🇸 바르셀로나 — 도착</div>
+    <div class="city-badge">9/21 · 1박</div>
+    <div class="city-weather">☀️ 23°C</div>
+    <div class="city-toggle">▼</div>
   </div>
   <div class="city-body">
     <div class="city-intro">
       <strong>카탈루냐의 수도.</strong> 가우디 건축과 지중해 감성이 공존하는 스페인 최고의 여행 도시. 이날은 장거리 비행 도착일이라 휴식 위주로.
+      <div class="luggage-box" style="margin-top:8px">
+  <div class="tip-label">🧳 28인치 캐리어 2개 이동 주의</div>
+  공항→호텔 픽업 차량이 있어 이동은 편리해요. 고딕 지구·람블라스 일부 구간은 돌바닥이나, 1박이라 큰 짐 이동은 없어요. 이날은 호텔 체크인 후 주변만 가볍게 이동하세요.
+</div>
     </div>
 
     <!-- 9/21 -->
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label transfer">이동</div>
-        <div class="day-title-main"><div class="day-desc">9/21(월) — 인천 출발 → 바르셀로나 도착</div><div class="day-tags"><span class="tag tag-transfer">이동</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">9/21(월) — 인천 출발 → 바르셀로나 도착</div>
+        <div class="day-tags"><span class="tag tag-transfer">이동</span></div>
       </div>
       <div class="day-content">
         <div class="info-grid">
-          <div class="info-box"><div class="info-box-label">✈️ 항공</div><div class="info-box-val">OZ511 · 인천 11:50 출발<br>바르셀로나 19:10 도착<br>(출발 3시간 전 공항 도착)</div></div>
-          <div class="info-box"><div class="info-box-label">🚗 픽업</div><div class="info-box-val">1커플 단독 픽업<br>공항 → 호텔 차량 서비스</div></div>
+          <div class="info-box"><div class="info-box-label">✈️ 항공 (OZ511)</div><div class="info-box-val">인천 <strong>11:50</strong> 출발<br>바르셀로나 <strong>19:10</strong> 도착<br>출발 3시간 전 공항 도착</div></div>
+          <div class="info-box"><div class="info-box-label">🚗 픽업</div><div class="info-box-val">1커플 단독 픽업<br>AUDI or BENZ 세단 동급<br>공항 → 호텔 차량 서비스</div></div>
         </div>
         <div class="tip-box">
           <div class="tip-label">💡 첫날 팁</div>
@@ -298,42 +790,93 @@
 <!-- ============================================================ -->
 <!-- ======================= 2. 포르투 ========================== -->
 <!-- ============================================================ -->
-<div class="city-block">
+<div class="city-block" data-city="Porto Portugal">
   <div class="city-header" onclick="toggleCity(this)">
-    <div class="city-header-top"><div class="city-dot" style="background:#1D9E75"></div><div class="city-name">🇵🇹 포르투 Porto</div><div class="city-toggle">▼</div></div>
-    <div class="city-header-sub"><div class="city-badge">9/22–9/25 · 4박</div><div class="city-weather">🌤️ 19–23°C</div></div>
+    <div class="city-dot" style="background:#1D9E75"></div>
+    <div class="city-name">🇵🇹 포르투 Porto</div>
+    <div class="city-badge">9/22–9/25 · 4박</div>
+    <div class="city-weather">🌤️ 19–23°C</div>
+    <div class="city-toggle">▼</div>
   </div>
   <div class="city-body open">
     <div class="city-intro">
       <strong>도우루 강 언덕 위의 낭만 도시.</strong> 아줄레주(파란 타일) 건물, 포트와인, 그리고 '비긴어게인2'로 한국인 입소문을 탄 여행지. 유네스코 세계문화유산 역사 지구를 품은 곳으로, 구시가지가 밀집해 있어 도보로 대부분 이동 가능해요. 9월 방문은 날씨 최고 시즌!
+      <div class="luggage-box" style="margin-top:8px">
+  <div class="tip-label">🧳 28인치 캐리어 2개 이동 주의</div>
+  ⚠️ 구시가지 전체가 <strong>코블스톤(돌바닥) + 급경사 언덕</strong>이에요. 캐리어 바퀴가 빠르게 마모·파손될 수 있습니다.<br>
+  • 관광 시 캐리어는 반드시 <strong>호텔에 보관</strong>하고 소형 백팩만 들고 이동하세요.<br>
+  • 캄파냐(Campanhã)역은 계단 있음 → 엘리베이터 위치 미리 확인, 또는 택시 이용 권장.<br>
+  • 히베이라 강변·렐루 서점 구간 특히 돌바닥 심함.
+</div>
     </div>
 
     <!-- 9/22 -->
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label mix">혼합</div>
-        <div class="day-title-main"><div class="day-desc">9/22(화) — 바르셀로나 → 포르투 이동 · 도착 후 자유관광</div><div class="day-tags"><span class="tag tag-transfer">이동</span><span class="tag tag-free">자유관광</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">9/22(화) — 바르셀로나 → 포르투 이동 · 도착 후 자유관광</div>
+        <div class="day-tags"><span class="tag tag-transfer">이동</span><span class="tag tag-free">자유관광</span></div>
       </div>
       <div class="day-content">
         <div class="info-grid">
-          <div class="info-box"><div class="info-box-label">✈️ 이동</div><div class="info-box-val">바르셀로나 → 포르투 항공<br>(스케줄 확정 후 안내)</div></div>
-          <div class="info-box"><div class="info-box-label">🚗 픽업</div><div class="info-box-val">1커플 단독 픽업<br>공항 → 호텔 차량 서비스</div></div>
+          <div class="info-box"><div class="info-box-label">✈️ 부엘링 (위탁 25kg)</div><div class="info-box-val">바르셀로나 <strong>15:10</strong> 출발<br>포르투 <strong>16:10</strong> 도착<br><span style="font-size:11px;color:#aaa">30kg 변경 시 1인 €13 추가 (발권 전)</span></div></div>
+          <div class="info-box"><div class="info-box-label">🚗 픽업</div><div class="info-box-val">1커플 단독 픽업<br>AUDI or BENZ 세단 동급<br>공항 → 호텔 차량 서비스</div></div>
         </div>
-        <div class="section-sub">📍 오후 추천 코스</div>
+        <div class="warn-box" style="margin-bottom:12px">
+          <div class="tip-label">⏱️ 9/22 이동 타임라인</div>
+          <b>~10:00</b> 호텔 체크아웃 →
+          <b>10:00–12:30</b> 바르셀로나 오전 자유관광 →
+          <b>12:30</b> 공항 출발 (택시·공항버스 약 40분) →
+          <b>13:10</b> 공항 탑승 수속 →
+          <b>15:10</b> 부엘링 탑승
+        </div>
+        <div class="section-sub">☀️ 오전 자유관광 (약 2.5시간)</div>
+        <ul class="spot-list">
+          <li class="spot-item">
+            <div class="spot-icon">🛒</div>
+            <div><div class="spot-name">보케리아 시장 (La Boqueria)</div><div class="spot-desc">람블라스 거리의 명물 재래시장. 이른 아침이 덜 붐벼요. 신선한 과일주스·타파스로 아침 식사. 10시 이전 방문 추천.</div>
+<div class="food-near"><span class="food-near-chip">🍹 <strong>신선 과일주스</strong> — 시장 내 스탠드 (€1–2)</span><span class="food-near-chip">🥪 <strong>Bar Pinotxo</strong> — 타파스·볶음란 (€5–8)</span><span class="food-near-chip">🥤 <strong>El Quim</strong> — 해산물 타파스 (€6–10)</span></div></div>
+          </li>
+          <li class="spot-item">
+            <div class="spot-icon">🚶</div>
+            <div><div class="spot-name">람블라스 거리 & 고딕 지구 산책</div><div class="spot-desc">바르셀로나의 상징적인 보행자 거리. 고딕 지구 골목과 바르셀로나 대성당 외관 감상. 짐은 호텔 보관 후 가볍게 이동.</div>
+<div class="food-near"><span class="food-near-chip">☕ <strong>Café de l'Acadèmia</strong> — 카페 콘 레체 (€1.5)</span><span class="food-near-chip">🥐 <strong>La Pallaresa</strong> — 추러스+초콜릿 (€4)</span></div></div>
+          </li>
+          <li class="spot-item">
+            <div class="spot-icon">☕</div>
+            <div><div class="spot-name">고딕 지구 카페에서 마지막 카페 콘 레체</div><div class="spot-desc">스페인식 밀크커피 '카페 콘 레체'와 크루아상으로 아침 마무리. 바르셀로나에서의 첫 아침을 여유롭게 즐기세요.</div></div>
+          </li>
+        </ul>
+        <div class="section-sub">🌆 포르투 도착 후 추천 코스</div>
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🌉</div>
-            <div><div class="spot-name">동 루이스 1세 다리 (Ponte Dom Luís I)</div><div class="spot-desc">에펠탑 설계자의 제자 테오필 셀리그 작품. 상층은 메트로, 하층은 도보 통행 가능. 일몰 후 야경이 압도적으로 아름다워요.</div></div>
+            <div><div class="spot-name">동 루이스 1세 다리 (Ponte Dom Luís I)</div><div class="spot-desc">에펠탑 설계자의 제자 테오필 셀리그 작품. 상층은 메트로, 하층은 도보 통행 가능. 일몰 후 야경이 압도적으로 아름다워요.</div>
+<div class="food-near"><span class="food-near-chip">🐙 <strong>Taberninha do Manel</strong> — 문어구이 (€18)</span><span class="food-near-chip">🍷 <strong>Adega São Nicolau</strong> — 그린 와인+타파스 (€12)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🏙️</div>
-            <div><div class="spot-name">히베이라 광장 (Ribeira) 강변 산책</div><div class="spot-desc">알록달록 파스텔 건물이 즐비한 강변. 야외 카페에서 포트와인 한 잔으로 첫 저녁 마무리. 테라스 자리는 18시 전에 잡아야 명당 확보 가능.</div></div>
+            <div><div class="spot-name">히베이라 광장 (Ribeira) 강변 산책</div><div class="spot-desc">알록달록 파스텔 건물이 즐비한 강변. 야외 카페에서 포트와인 한 잔으로 첫 저녁 마무리. 테라스 자리는 18시 전에 잡아야 명당 확보 가능.</div>
+<div class="food-near"><span class="food-near-chip">🐟 <strong>O Comercial</strong> — 바칼랴우 (소금대구찜, €15)</span><span class="food-near-chip">🍷 <strong>Vinho Verde</strong> — 그린 와인 강변 테라스 (€3/잔)</span><span class="food-near-chip">🐙 <strong>DOP</strong> — 현대 포르투갈 요리 (€22)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">📚</div>
-            <div><div class="spot-name">렐루 서점 (Livraria Lello)</div><div class="spot-desc">J.K. 롤링에게 호그와트 영감을 준 곳. 입장료 €5 (책 구매 시 차감). 웨이팅 피하려면 오전 10시 전 방문 추천.</div></div>
+            <div><div class="spot-name">렐루 서점 (Livraria Lello)</div><div class="spot-desc">J.K. 롤링에게 호그와트 영감을 준 곳. 입장료 €5 (책 구매 시 차감). 웨이팅 피하려면 오전 10시 전 방문 추천.</div>
+<div class="food-near"><span class="food-near-chip">☕ <strong>Majestic Café</strong> — 갈라웅(밀크커피)+케이크 (€8, 도보 10분)</span><span class="food-near-chip">🥧 <strong>Padaria Ribeiro</strong> — 에그타르트 (€1.5)</span></div></div>
           </li>
         </ul>
+        <div class="section-sub">🗺️ 추천 동선 & 이동 시간</div>
+        <div class="travel-flow">
+  <span class="tf-stop">🏨 호텔 체크인</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 10분</span> →</span>
+  <span class="tf-stop">📚 렐루 서점</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🚂 상 벤투 기차역</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 10분</span> →</span>
+  <span class="tf-stop">🌉 동 루이스 다리</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 3분</span> →</span>
+  <span class="tf-stop">🏙️ 히베이라 강변</span>
+</div>
         <div class="tip-box"><div class="tip-label">💡 꿀팁</div>첫날 저녁은 히베이라 강변 테라스 레스토랑에서 문어 구이 + 그린 와인(Vinho Verde) 조합을 추천해요. 노을 보며 마시는 상큼한 그린 와인이 포르투 첫인상을 완성시켜 줍니다.</div>
       </div>
     </div>
@@ -342,7 +885,8 @@
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label free">자유</div>
-        <div class="day-title-main"><div class="day-desc">9/23(수) — 전일 자유관광 · 스냅 촬영 (선택)</div><div class="day-tags"><span class="tag tag-free">자유관광</span><span class="tag tag-snap">스냅촬영</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">9/23(수) — 전일 자유관광 · 스냅 촬영 (선택)</div>
+        <div class="day-tags"><span class="tag tag-free">자유관광</span><span class="tag tag-snap">스냅촬영</span></div>
       </div>
       <div class="day-content">
         <div class="info-box" style="margin-bottom:12px">
@@ -353,17 +897,32 @@
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">⛪</div>
-            <div><div class="spot-name">포르투 대성당 (Sé do Porto)</div><div class="spot-desc">로마네스크·바로크·고딕 세 양식이 공존. 스냅 촬영 명소. 트램 황금빛 사진 명소.</div></div>
+            <div><div class="spot-name">포르투 대성당 (Sé do Porto)</div><div class="spot-desc">로마네스크·바로크·고딕 세 양식이 공존. 스냅 촬영 명소. 트램 황금빛 사진 명소.</div>
+<div class="food-near"><span class="food-near-chip">🥪 <strong>Café Santiago</strong> — 프란세지냐 (€12, 근처 5분)</span><span class="food-near-chip">🐟 <strong>Cantina 32</strong> — 현대 포르투갈 (€18)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🍷</div>
-            <div><div class="spot-name">빌라 노바 드 가이아 와이너리 투어</div><div class="spot-desc">동 루이스 다리 건너 포트와인 셀러 밀집 지역. 칼렘(Calem, 파두 공연 포함), 테일러(한국어 오디오 제공), 샌드맨 중 1곳 사전 예약 추천.</div></div>
+            <div><div class="spot-name">빌라 노바 드 가이아 와이너리 투어</div><div class="spot-desc">동 루이스 다리 건너 포트와인 셀러 밀집 지역. 칼렘(Calem, 파두 공연 포함), 테일러(한국어 오디오 제공), 샌드맨 중 1곳 사전 예약 추천.</div>
+<div class="food-near"><span class="food-near-chip">🍷 <strong>Calem 테이스팅</strong> — 포트와인 2종 (€13, 파두 공연 포함)</span><span class="food-near-chip">🧀 <strong>와이너리 치즈 플레이트</strong> — 포트와인+치즈 페어링 (€15)</span><span class="food-near-chip">🐙 <strong>Espaço Porto Cruz</strong> — 강뷰 레스토랑 (€20)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🌿</div>
-            <div><div class="spot-name">모루 정원 (Jardim do Morro)</div><div class="spot-desc">포르투 야경 명소. 해 질 녘 현지인들이 와인·간식 들고 피크닉. 마트에서 미리 장 봐오기.</div></div>
+            <div><div class="spot-name">모루 정원 (Jardim do Morro)</div><div class="spot-desc">포르투 야경 명소. 해 질 녘 현지인들이 와인·간식 들고 피크닉. 마트에서 미리 장 봐오기.</div>
+<div class="food-near"><span class="food-near-chip">🍷 <strong>Pingo Doce 마트</strong> — 포트와인+치즈 피크닉 (€8~)</span><span class="food-near-chip">🫒 <strong>올리브+크래커</strong> — 현지인 스타일 해질녘 피크닉</span></div></div>
           </li>
         </ul>
+        <div class="section-sub">🗺️ 추천 동선 & 이동 시간</div>
+        <div class="travel-flow">
+  <span class="tf-stop">🏨 호텔</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 8분</span> →</span>
+  <span class="tf-stop">⛪ 포르투 대성당</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🌉 동 루이스 다리 상단</span>
+  <span class="tf-arrow">→ <span class="tf-time">다리 건너 도보 5분</span> →</span>
+  <span class="tf-stop">🍷 가이아 와이너리</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🌿 모루 정원</span>
+</div>
         <div class="tip-box"><div class="tip-label">💡 와이너리 팁</div>칼렘은 파두 공연 포함 투어가 가능하고, 테일러는 유일하게 한국어 오디오 가이드를 제공해요. 사전 온라인 예약 필수!</div>
       </div>
     </div>
@@ -372,28 +931,45 @@
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label free">자유</div>
-        <div class="day-title-main"><div class="day-desc">9/24(목) — 전일 자유관광</div><div class="day-tags"><span class="tag tag-free">자유관광</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">9/24(목) — 전일 자유관광</div>
+        <div class="day-tags"><span class="tag tag-free">자유관광</span></div>
       </div>
       <div class="day-content">
         <div class="section-sub">📍 추천 코스</div>
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🛒</div>
-            <div><div class="spot-name">볼량 시장 (Mercado do Bolhão)</div><div class="spot-desc">1839년 개장, 2023년 리모델링 완료. 신선 식재료, 아줄레주 기념품, 정어리 통조림 등 쇼핑 최적. 상 벤투역과 도보 5분.</div></div>
+            <div><div class="spot-name">볼량 시장 (Mercado do Bolhão)</div><div class="spot-desc">1839년 개장, 2023년 리모델링 완료. 신선 식재료, 아줄레주 기념품, 정어리 통조림 등 쇼핑 최적. 상 벤투역과 도보 5분.</div>
+<div class="food-near"><span class="food-near-chip">🐟 <strong>시장 내 정어리 통조림</strong> — 기념품 겸 간식 (€3~)</span><span class="food-near-chip">🥧 <strong>Café Progresso</strong> — 수플리+에그타르트 (€2)</span><span class="food-near-chip">🧀 <strong>시장 내 치즈·햄 코너</strong> — 시식 후 구매</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🚂</div>
-            <div><div class="spot-name">상 벤투 기차역 (São Bento)</div><div class="spot-desc">2만여 장 아줄레주 타일 벽화가 덮인 역사 자체가 예술 작품. 무료 관람. 포르투갈 역사를 그림으로 만날 수 있어요.</div></div>
+            <div><div class="spot-name">상 벤투 기차역 (São Bento)</div><div class="spot-desc">2만여 장 아줄레주 타일 벽화가 덮인 역사 자체가 예술 작품. 무료 관람. 포르투갈 역사를 그림으로 만날 수 있어요.</div>
+<div class="food-near"><span class="food-near-chip">☕ <strong>Café Guarany</strong> — 카페+파스텔 드 나타 (€4, 역 바로 옆)</span><span class="food-near-chip">🥐 <strong>Padaria Pastelaria</strong> — 아침 빵+커피 (€3)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🗼</div>
-            <div><div class="spot-name">클레리구스 탑 (Torre dos Clérigos)</div><div class="spot-desc">240개 계단 올라가면 포르투 전경 한눈에. 해질녘 방문 시 황금빛 도시 뷰. 입장료 €5.</div></div>
+            <div><div class="spot-name">클레리구스 탑 (Torre dos Clérigos)</div><div class="spot-desc">240개 계단 올라가면 포르투 전경 한눈에. 해질녘 방문 시 황금빛 도시 뷰. 입장료 €5.</div>
+<div class="food-near"><span class="food-near-chip">🥧 <strong>Manteigaria</strong> — 포르투 최고 에그타르트 (€1.2, 도보 3분)</span><span class="food-near-chip">🍷 <strong>Café Royal</strong> — 포트와인 한 잔 (€3)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">⛵</div>
-            <div><div class="spot-name">도우루 강 크루즈</div><div class="spot-desc">히베이라 선착장 출발. 동 루이스 다리 포함 6개 다리를 뱃길로 감상, 약 1시간 소요. €15 내외.</div></div>
+            <div><div class="spot-name">도우루 강 크루즈</div><div class="spot-desc">히베이라 선착장 출발. 동 루이스 다리 포함 6개 다리를 뱃길로 감상, 약 1시간 소요. €15 내외.</div>
+<div class="food-near"><span class="food-near-chip">🐙 <strong>A Cozinha</strong> — 바칼랴우 아 브라스 (€14, 선착장 근처)</span><span class="food-near-chip">🦞 <strong>Restaurante Hispano</strong> — 해산물 구이 (€20)</span></div></div>
           </li>
         </ul>
+        <div class="section-sub">🗺️ 추천 동선 & 이동 시간</div>
+        <div class="travel-flow">
+  <span class="tf-stop">🏨 호텔</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🛒 볼량 시장</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🚂 상 벤투 기차역</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🗼 클레리구스 탑</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 15분</span> →</span>
+  <span class="tf-stop">⛵ 히베이라 선착장 크루즈</span>
+</div>
         <div class="tip-box"><div class="tip-label">💡 동선 팁</div>볼량 시장 → 상 벤투 기차역 → 렐루 서점이 도보로 자연스럽게 이어져요. 오전에 이 코스 돌고, 오후에 도우루 강 크루즈로 마무리하면 알차요.</div>
       </div>
     </div>
@@ -402,14 +978,16 @@
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label free">자유</div>
-        <div class="day-title-main"><div class="day-desc">9/25(금) — 전일 자유관광 · 리스본 이동 준비</div><div class="day-tags"><span class="tag tag-free">자유관광</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">9/25(금) — 전일 자유관광 · 리스본 이동 준비</div>
+        <div class="day-tags"><span class="tag tag-free">자유관광</span></div>
       </div>
       <div class="day-content">
         <div class="section-sub">📍 추천 코스</div>
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🏛️</div>
-            <div><div class="spot-name">세라 두 필라르 수도원 전망대</div><div class="spot-desc">동 루이스 다리 건너 빌라 노바 드 가이아 쪽. 포르투 야경 명소 1위. 해질녘 필수 방문.</div></div>
+            <div><div class="spot-name">세라 두 필라르 수도원 전망대</div><div class="spot-desc">동 루이스 다리 건너 빌라 노바 드 가이아 쪽. 포르투 야경 명소 1위. 해질녘 필수 방문.</div>
+<div class="food-near"><span class="food-near-chip">🍷 <strong>Fervura Gastrobar</strong> — 전망 좋은 포트와인 바 (€5/잔)</span><span class="food-near-chip">🐙 <strong>Restaurante Vinum</strong> — 테라스 디너 (€25, Graham's 와이너리)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">☕</div>
@@ -458,42 +1036,87 @@
 <!-- ============================================================ -->
 <!-- ======================= 3. 리스본 ========================== -->
 <!-- ============================================================ -->
-<div class="city-block">
+<div class="city-block" data-city="Lisbon Portugal">
   <div class="city-header" onclick="toggleCity(this)">
-    <div class="city-header-top"><div class="city-dot" style="background:#1D9E75"></div><div class="city-name">🇵🇹 리스본 Lisboa</div><div class="city-toggle">▼</div></div>
-    <div class="city-header-sub"><div class="city-badge">9/26–9/28 · 3박</div><div class="city-weather">☀️ 20–25°C</div></div>
+    <div class="city-dot" style="background:#1D9E75"></div>
+    <div class="city-name">🇵🇹 리스본 Lisboa</div>
+    <div class="city-badge">9/26–9/28 · 3박</div>
+    <div class="city-weather">☀️ 20–25°C</div>
+    <div class="city-toggle">▼</div>
   </div>
   <div class="city-body">
     <div class="city-intro">
       <strong>7개의 언덕 위에 세워진 포르투갈의 수도.</strong> 대항해시대의 영광이 깃든 제로니무스 수도원·벨렘 탑, 골목마다 울려 퍼지는 파두 음악, 노란 28번 트램이 상징적이에요. 유네스코 세계문화유산 역사 지구와 현대적인 타임아웃 마켓이 공존하는 미식 도시이기도 합니다.
+      <div class="luggage-box" style="margin-top:8px">
+  <div class="tip-label">🧳 28인치 캐리어 2개 이동 주의</div>
+  ⚠️ 알파마 지구·알바이신은 <strong>극도의 급경사 + 돌바닥</strong>이에요. 절대 캐리어 끌고 이동 불가.<br>
+  • <strong>28번 트램</strong>은 매우 좁아 캐리어 탑승 불가 → 짐 없이 이동할 것.<br>
+  • 벨렘 지구는 상대적으로 평탄하나 일부 돌바닥 있음.<br>
+  • 체크아웃 당일(9/29) 아침 짐은 호텔 프런트에 맡기고 가볍게 관광 후 공항으로 이동하세요.<br>
+  • 공항 이동 시 반드시 <strong>택시 이용</strong> (캐리어 2개 → 지하철·트램 불가).
+</div>
     </div>
 
     <!-- 9/26 -->
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label mix">혼합</div>
-        <div class="day-title-main"><div class="day-desc">9/26(토) — 포르투 → 리스본 열차 이동 · 자유관광</div><div class="day-tags"><span class="tag tag-transfer">이동</span><span class="tag tag-free">자유관광</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">9/26(토) — 포르투 → 리스본 열차 이동 · 자유관광</div>
+        <div class="day-tags"><span class="tag tag-transfer">이동</span><span class="tag tag-free">자유관광</span></div>
       </div>
       <div class="day-content">
         <div class="info-grid">
-          <div class="info-box"><div class="info-box-label">🚂 열차</div><div class="info-box-val">포르투 캄파냐역 출발<br>→ 리스본 산타 아폴로니아역 도착<br>(약 3시간 소요, 스케줄 변동 가능)</div></div>
-          <div class="info-box"><div class="info-box-label">🎟️ 교통 팁</div><div class="info-box-val">리스보아 카드 구매 시<br>트램·버스 무제한 + 주요 명소 할인.<br>공항에서도 구매 가능.</div></div>
+          <div class="info-box"><div class="info-box-label">🚂 열차 (스케줄 오픈 전)</div><div class="info-box-val">포르투 <strong>캄파냐(Campanhã)역</strong> 출발<br>리스본 <strong>산타 아폴로니아역</strong> 도착<br>약 3시간 소요<br><span style="font-size:11px;color:#aaa">희망 시간대 있으면 담당자에게 전달</span></div></div>
+          <div class="info-box"><div class="info-box-label">🎟️ 교통 팁</div><div class="info-box-val">리스보아 카드 구매 시<br>트램·버스 무제한 + 주요 명소 할인<br>공항에서도 구매 가능</div></div>
         </div>
-        <div class="section-sub">📍 오후 추천 코스 — 벨렘 지구</div>
+        <div class="warn-box" style="margin-bottom:12px">
+          <div class="tip-label">⏱️ 9/26 이동 타임라인</div>
+          <b>~10:00</b> 호텔 체크아웃 →
+          <b>오전 중</b> 포르투 마지막 관광 →
+          <b>출발 30–40분 전</b> 캄파냐역 이동 (호텔에서 택시·메트로 약 15분) →
+          <b>열차 탑승</b> → 리스본 산타 아폴로니아역 도착 (약 3시간)
+        </div>
+        <div class="section-sub">☀️ 오전 포르투 마지막 코스</div>
+        <ul class="spot-list">
+          <li class="spot-item">
+            <div class="spot-icon">🗼</div>
+            <div><div class="spot-name">클레리구스 탑 (Torre dos Clérigos) — 아침 뷰</div><div class="spot-desc">이른 아침 240계단 올라 포르투 전경 감상. 오전엔 관광객이 적어 여유롭게 사진 찍을 수 있어요. 입장료 €5.</div>
+<div class="food-near"><span class="food-near-chip">🥧 <strong>Manteigaria</strong> — 갓 구운 에그타르트 (€1.2, 도보 3분)</span><span class="food-near-chip">☕ <strong>Café Piolho</strong> — 이른 아침 카페 콘 레체 (€1.5)</span></div></div>
+          </li>
+          <li class="spot-item">
+            <div class="spot-icon">🥚</div>
+            <div><div class="spot-name">Manteigaria에서 마지막 에그타르트</div><div class="spot-desc">포르투를 떠나기 전 갓 구운 에그타르트 + 갈라웅(밀크커피)으로 마무리. 캄파냐역으로 이동 전 꼭 들르세요.</div></div>
+          </li>
+        </ul>
+        <div class="section-sub">🌆 리스본 도착 후 추천 코스 — 벨렘 지구</div>
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🏰</div>
-            <div><div class="spot-name">제로니무스 수도원 (Mosteiro dos Jerónimos)</div><div class="spot-desc">유네스코 세계문화유산. 바스쿠 다 가마의 인도 항로 개척을 기념해 지어진 마누엘 양식의 걸작. 입장료 €10.</div></div>
+            <div><div class="spot-name">제로니무스 수도원 (Mosteiro dos Jerónimos)</div><div class="spot-desc">유네스코 세계문화유산. 바스쿠 다 가마의 인도 항로 개척을 기념해 지어진 마누엘 양식의 걸작. 입장료 €10.</div>
+<div class="food-near"><span class="food-near-chip">🥧 <strong>Pastéis de Belém</strong> — 1837년 원조 에그타르트 (€1.6, 바로 옆!)</span><span class="food-near-chip">🍹 <strong>A Margem</strong> — 테주강 뷰 카페 음료 (€8)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🗼</div>
-            <div><div class="spot-name">벨렘 탑 (Torre de Belém)</div><div class="spot-desc">대항해시대의 상징. 테주강 위에 서 있는 마누엘 양식 요새. 입장료 €6.</div></div>
+            <div><div class="spot-name">벨렘 탑 (Torre de Belém)</div><div class="spot-desc">대항해시대의 상징. 테주강 위에 서 있는 마누엘 양식 요새. 입장료 €6.</div>
+<div class="food-near"><span class="food-near-chip">🥧 <strong>Pastéis de Belém</strong> — 에그타르트 (도보 5분, €1.6)</span><span class="food-near-chip">🍹 <strong>강변 키오스크</strong> — 임페리알 맥주+청어 (€5)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🍮</div>
             <div><div class="spot-name">파스테이스 드 벨렘 (Pastéis de Belém)</div><div class="spot-desc">1837년부터 이어온 리스본 원조 에그타르트 맛집. 제로니무스 수도원 바로 옆. 줄 서도 반드시 먹어야 할 필수 코스.</div></div>
           </li>
         </ul>
+        <div class="section-sub">🗺️ 추천 동선 & 이동 시간</div>
+        <div class="travel-flow">
+  <span class="tf-stop">🚂 산타 아폴로니아역</span>
+  <span class="tf-arrow">→ <span class="tf-time">택시 15분</span> →</span>
+  <span class="tf-stop">🏨 호텔 (짐 맡김)</span>
+  <span class="tf-arrow">→ <span class="tf-time">트램 15E 20분</span> →</span>
+  <span class="tf-stop">🏰 제로니무스 수도원</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 10분</span> →</span>
+  <span class="tf-stop">🗼 벨렘 탑</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🍮 파스테이스 드 벨렘</span>
+</div>
         <div class="tip-box"><div class="tip-label">💡 동선 팁</div>산타 아폴로니아역 도착 후 짐 호텔에 맡기고 바로 벨렘 지구로 이동하면 오후를 알차게 쓸 수 있어요. 벨렘은 시내에서 트램 15E번으로 약 20분.</div>
       </div>
     </div>
@@ -502,32 +1125,50 @@
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label free">자유</div>
-        <div class="day-title-main"><div class="day-desc">9/27(일) — 전일 자유관광</div><div class="day-tags"><span class="tag tag-free">자유관광</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">9/27(일) — 전일 자유관광</div>
+        <div class="day-tags"><span class="tag tag-free">자유관광</span></div>
       </div>
       <div class="day-content">
         <div class="section-sub">📍 추천 코스 — 구시가지 & 전망대</div>
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🚋</div>
-            <div><div class="spot-name">28번 트램 (Tram 28)</div><div class="spot-desc">리스본 필수 체험. 알파마·마르팀 모니즈 구간 언덕길과 골목을 달리는 레트로 노란 트램. 소매치기 주의, 아침 일찍 탑승 추천.</div></div>
+            <div><div class="spot-name">28번 트램 (Tram 28)</div><div class="spot-desc">리스본 필수 체험. 알파마·마르팀 모니즈 구간 언덕길과 골목을 달리는 레트로 노란 트램. 소매치기 주의, 아침 일찍 탑승 추천.</div>
+<div class="food-near"><span class="food-near-chip">🥐 <strong>Confeitaria Nacional</strong> — 리스본 최고 파스텔+비카 (€4)</span><span class="food-near-chip">🐟 <strong>Tasca do Chico</strong> — 파두+타파스 저녁 (€20, 예약 필수)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🏯</div>
-            <div><div class="spot-name">상 조르제 성 (Castelo de São Jorge)</div><div class="spot-desc">12세기부터 이어진 언덕 위 요새. 리스본 전경을 한눈에 볼 수 있는 최고의 전망 포인트. 입장료 €15.</div></div>
+            <div><div class="spot-name">상 조르제 성 (Castelo de São Jorge)</div><div class="spot-desc">12세기부터 이어진 언덕 위 요새. 리스본 전경을 한눈에 볼 수 있는 최고의 전망 포인트. 입장료 €15.</div>
+<div class="food-near"><span class="food-near-chip">🥩 <strong>O Faz Figura</strong> — 성 뷰 테라스+감바스 (€18)</span><span class="food-near-chip">🍷 <strong>Mesa de Frades</strong> — 파두 라이브 디너 (€25, 예약 필수)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🌇</div>
-            <div><div class="spot-name">포르타스 두 솔 전망대 (Miradouro Portas do Sol)</div><div class="spot-desc">알파마 지구 오렌지 지붕이 내려다보이는 전망대. 28번 트램 정류장 바로 옆이라 접근성 최고. 카페도 있어요.</div></div>
+            <div><div class="spot-name">포르타스 두 솔 전망대 (Miradouro Portas do Sol)</div><div class="spot-desc">알파마 지구 오렌지 지붕이 내려다보이는 전망대. 28번 트램 정류장 바로 옆이라 접근성 최고. 카페도 있어요.</div>
+<div class="food-near"><span class="food-near-chip">☕ <strong>전망대 키오스크</strong> — 비카(에스프레소)+에그타르트 (€3)</span><span class="food-near-chip">🍺 <strong>Chapitô à Mesa</strong> — 알파마 뷰 레스토랑 (€20)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🎵</div>
-            <div><div class="spot-name">알파마 골목 & 파두 바</div><div class="spot-desc">리스본에서 가장 오래된 지역. 구슬픈 포르투갈 전통 음악 파두를 라이브로 즐길 수 있는 바들이 골목마다 있어요.</div></div>
+            <div><div class="spot-name">알파마 골목 & 파두 바</div><div class="spot-desc">리스본에서 가장 오래된 지역. 구슬픈 포르투갈 전통 음악 파두를 라이브로 즐길 수 있는 바들이 골목마다 있어요.</div>
+<div class="food-near"><span class="food-near-chip">🎵 <strong>Sr. Fado</strong> — 파두 라이브+저녁식사 (€25)</span><span class="food-near-chip">🎵 <strong>A Severa</strong> — 100년 전통 파두 레스토랑 (€30)</span><span class="food-near-chip">🍷 <strong>Zé da Mouraria</strong> — 바칼랴우+와인 (€15)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🛗</div>
-            <div><div class="spot-name">산타 주스타 엘리베이터 (Elevador de Santa Justa)</div><div class="spot-desc">에펠탑 설계자 제자 작품. 1902년 건설된 철제 엘리베이터로 시내 전경 감상. 줄이 길면 카르모 수녀원 루트 이용.</div></div>
+            <div><div class="spot-name">산타 주스타 엘리베이터 (Elevador de Santa Justa)</div><div class="spot-desc">에펠탑 설계자 제자 작품. 1902년 건설된 철제 엘리베이터로 시내 전경 감상. 줄이 길면 카르모 수녀원 루트 이용.</div>
+<div class="food-near"><span class="food-near-chip">🥩 <strong>Solar dos Presuntos</strong> — 포르투갈 전통 요리 (€20, 도보 5분)</span><span class="food-near-chip">🥐 <strong>Confeitaria Nacional</strong> — 리스본 명물 파스텔 (€3)</span></div></div>
           </li>
         </ul>
+        <div class="section-sub">🗺️ 추천 동선 & 이동 시간</div>
+        <div class="travel-flow">
+  <span class="tf-stop">🏨 호텔</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🚋 28번 트램 탑승</span>
+  <span class="tf-arrow">→ <span class="tf-time">트램 15분</span> →</span>
+  <span class="tf-stop">🏯 상 조르제 성</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🌇 포르타스 두 솔 전망대</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 10분</span> →</span>
+  <span class="tf-stop">🎵 알파마 파두 바</span>
+</div>
         <div class="tip-box"><div class="tip-label">💡 꿀팁</div>28번 트램은 늘 여행자로 만석이에요. 대기 없이 편하게 이동하려면 12번 트램이나 737번 버스를 대안으로 활용하세요.</div>
       </div>
     </div>
@@ -536,14 +1177,16 @@
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label free">자유</div>
-        <div class="day-title-main"><div class="day-desc">9/28(월) — 전일 자유관광</div><div class="day-tags"><span class="tag tag-free">자유관광</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">9/28(월) — 전일 자유관광</div>
+        <div class="day-tags"><span class="tag tag-free">자유관광</span></div>
       </div>
       <div class="day-content">
         <div class="section-sub">📍 추천 코스 — 코메르시우·바이샤 or 신트라 근교</div>
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🏛️</div>
-            <div><div class="spot-name">코메르시우 광장 (Praça do Comércio)</div><div class="spot-desc">테주 강변의 리스본 대표 광장. 노란 개선문과 탁 트인 강 전망이 인상적. 주변에 레스토랑·카페 밀집.</div></div>
+            <div><div class="spot-name">코메르시우 광장 (Praça do Comércio)</div><div class="spot-desc">테주 강변의 리스본 대표 광장. 노란 개선문과 탁 트인 강 전망이 인상적. 주변에 레스토랑·카페 밀집.</div>
+<div class="food-near"><span class="food-near-chip">🦞 <strong>Cervejaria Ramiro</strong> — 해산물 (€30~, 리스본 최고)</span><span class="food-near-chip">🥩 <strong>Café Martinho da Arcada</strong> — 1782년 역사 카페 (€15)</span><span class="food-near-chip">🍷 <strong>강변 테라스</strong> — 생선구이+화이트와인 (€18)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🏪</div>
@@ -551,9 +1194,20 @@
           </li>
           <li class="spot-item">
             <div class="spot-icon">🏰</div>
-            <div><div class="spot-name">신트라 당일치기 (선택)</div><div class="spot-desc">동화 속 페나 궁전·무어 성. 리스본 호시우역에서 기차 40분. 리스본에서 가장 인기 있는 근교 여행지. 아침 일찍 출발 권장.</div></div>
+            <div><div class="spot-name">신트라 당일치기 (선택)</div><div class="spot-desc">동화 속 페나 궁전·무어 성. 리스본 호시우역에서 기차 40분. 리스본에서 가장 인기 있는 근교 여행지. 아침 일찍 출발 권장.</div>
+<div class="food-near"><span class="food-near-chip">🥧 <strong>Piriquita</strong> — 신트라 명물 트라베세이로+에그타르트 (€2)</span><span class="food-near-chip">🧇 <strong>Confeitaria Piriquita</strong> — 퀘이자다(치즈케이크) (€1.5)</span><span class="food-near-chip">🍽️ <strong>Tascantiga</strong> — 타파스 점심 (€15)</span></div></div>
           </li>
         </ul>
+        <div class="section-sub">🗺️ 추천 동선 & 이동 시간</div>
+        <div class="travel-flow">
+  <span class="tf-stop">🏨 호텔</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 10분</span> →</span>
+  <span class="tf-stop">🏛️ 코메르시우 광장</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🏪 타임아웃 마켓</span>
+  <span class="tf-arrow">→ <span class="tf-time">택시 40분</span> →</span>
+  <span class="tf-stop">🏰 신트라 (선택)</span>
+</div>
         <div class="tip-box"><div class="tip-label">💡 쇼핑 팁</div>바이샤 지구의 루아 아우구스타(Rua Augusta) 거리가 리스본 최대 쇼핑 스트리트예요. 아줄레주 타일 기념품, 코르크 제품, 정어리 통조림이 리스본 대표 기념품.</div>
       </div>
     </div>
@@ -596,32 +1250,63 @@
 <!-- ============================================================ -->
 <!-- ======================= 4. 세비야 ========================== -->
 <!-- ============================================================ -->
-<div class="city-block">
+<div class="city-block" data-city="Seville Spain">
   <div class="city-header" onclick="toggleCity(this)">
-    <div class="city-header-top"><div class="city-dot" style="background:#d4930e"></div><div class="city-name">🇪🇸 세비야 Sevilla</div><div class="city-toggle">▼</div></div>
-    <div class="city-header-sub"><div class="city-badge">9/29–9/30 · 2박</div><div class="city-weather">☀️ 25–30°C</div></div>
+    <div class="city-dot" style="background:#d4930e"></div>
+    <div class="city-name">🇪🇸 세비야 Sevilla</div>
+    <div class="city-badge">9/29–9/30 · 2박</div>
+    <div class="city-weather">☀️ 25–30°C</div>
+    <div class="city-toggle">▼</div>
   </div>
   <div class="city-body">
     <div class="city-intro">
       <strong>플라멩코와 열정의 도시, 안달루시아의 수도.</strong> 이슬람·고딕·르네상스 건축이 뒤섞인 알카사르 왕궁, 세계 최대 고딕 성당, 스타워즈에도 등장한 스페인 광장으로 유명해요. 9월엔 덥지만 낮에 충분히 즐길 수 있어요.
+      <div class="luggage-box" style="margin-top:8px">
+  <div class="tip-label">🧳 28인치 캐리어 2개 이동 주의</div>
+  포르투·리스본보다 상대적으로 <strong>평탄한 편</strong>이에요. 주요 도로는 아스팔트라 캐리어 이동 가능.<br>
+  • 알카사르 왕궁·산타 크루스 지구 주변은 돌바닥 있음 → 관광 시 호텔에 짐 보관 권장.<br>
+  • 10/1 론다 이동 당일: 투어 차량이 있어 짐은 호텔에 보관 후 투어 후 론다 호텔로 이동.
+</div>
     </div>
 
     <!-- 9/29 -->
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label transfer">이동</div>
-        <div class="day-title-main"><div class="day-desc">9/29(화) — 리스본 → 세비야 항공 이동</div><div class="day-tags"><span class="tag tag-transfer">이동</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">9/29(화) — 리스본 → 세비야 항공 이동</div>
+        <div class="day-tags"><span class="tag tag-transfer">이동</span></div>
       </div>
       <div class="day-content">
         <div class="info-grid">
-          <div class="info-box"><div class="info-box-label">✈️ 항공</div><div class="info-box-val">리스본 공항 출발<br>→ 세비야 공항 도착<br>(스케줄 확정 후 안내)</div></div>
+          <div class="info-box"><div class="info-box-label">✈️ 라이언에어 (위탁 20kg)</div><div class="info-box-val">리스본 <strong>13:40</strong> 출발<br>세비야 <strong>15:45</strong> 도착<br><span style="font-size:11px;color:#aaa">23kg 변경 시 1인 €12 추가 (발권 전)</span></div></div>
           <div class="info-box"><div class="info-box-label">🚗 픽업</div><div class="info-box-val">1커플 단독 픽업<br>공항 → 호텔 차량 서비스</div></div>
         </div>
-        <div class="section-sub">📍 도착 후 저녁 추천</div>
+        <div class="warn-box" style="margin-bottom:12px">
+          <div class="tip-label">⏱️ 9/29 이동 타임라인</div>
+          <b>~10:00</b> 호텔 체크아웃 →
+          <b>10:00–11:00</b> 리스본 오전 마지막 관광 →
+          <b>11:10</b> 리스본 공항 출발 (시내 → 공항 택시 약 20–30분) →
+          <b>11:40</b> 공항 탑승 수속 →
+          <b>13:40</b> 라이언에어 탑승
+        </div>
+        <div class="section-sub">☀️ 오전 리스본 마지막 코스 (약 1시간)</div>
+        <ul class="spot-list">
+          <li class="spot-item">
+            <div class="spot-icon">🏛️</div>
+            <div><div class="spot-name">코메르시우 광장 (Praça do Comércio) 아침 산책</div><div class="spot-desc">테주강이 보이는 광장에서 리스본 마지막 아침 산책. 이른 아침엔 현지인들의 조깅 코스. 황금빛 개선문과 강변 뷰 사진 찍기 좋아요.</div>
+<div class="food-near"><span class="food-near-chip">☕ <strong>Café Martinho da Arcada</strong> — 1782년 역사 카페+비카 (€3)</span><span class="food-near-chip">🥧 <strong>Padaria Portuguesa</strong> — 에그타르트+빵 (€3)</span></div></div>
+          </li>
+          <li class="spot-item">
+            <div class="spot-icon">🍮</div>
+            <div><div class="spot-name">바이샤 지구 카페에서 마지막 비카 + 에그타르트</div><div class="spot-desc">포르투갈 에스프레소 '비카(Bica)'와 에그타르트로 리스본 마지막 아침 식사. 짐은 호텔에 맡기고 가볍게 이동하세요.</div></div>
+          </li>
+        </ul>
+        <div class="section-sub">🌆 세비야 도착 후 저녁 추천</div>
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🍽️</div>
-            <div><div class="spot-name">알라메다 데 에라클레스 광장 저녁</div><div class="spot-desc">세비야 현지인이 즐겨 찾는 저녁 외식 성지. 타파스 바와 펍이 즐비하고 로컬 분위기 물씬. 광장에 야외 테라스 좌석 많아요.</div></div>
+            <div><div class="spot-name">알라메다 데 에라클레스 광장 저녁</div><div class="spot-desc">세비야 현지인이 즐겨 찾는 저녁 외식 성지. 타파스 바와 펍이 즐비하고 로컬 분위기 물씬. 광장에 야외 테라스 좌석 많아요.</div>
+<div class="food-near"><span class="food-near-chip">🫒 <strong>El Rinconcillo</strong> — 1670년 세비야 최고령 바·타파스 (€4)</span><span class="food-near-chip">🍺 <strong>Bar Eslava</strong> — 가장 유명한 타파스 바 (€3~5)</span><span class="food-near-chip">🥩 <strong>Duo Tapas</strong> — 알라메다 현지 맛집 (€15)</span></div></div>
           </li>
         </ul>
       </div>
@@ -631,32 +1316,50 @@
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label free">자유</div>
-        <div class="day-title-main"><div class="day-desc">9/30(수) — 전일 자유관광</div><div class="day-tags"><span class="tag tag-free">자유관광</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">9/30(수) — 전일 자유관광</div>
+        <div class="day-tags"><span class="tag tag-free">자유관광</span></div>
       </div>
       <div class="day-content">
         <div class="section-sub">📍 추천 코스</div>
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🏰</div>
-            <div><div class="spot-name">알카사르 왕궁 (Real Alcázar)</div><div class="spot-desc">유네스코 세계문화유산. 이슬람·고딕·르네상스 양식 융합의 걸작. 왕좌의 게임 촬영지. 사전 예약 필수. 입장료 €12.50.</div></div>
+            <div><div class="spot-name">알카사르 왕궁 (Real Alcázar)</div><div class="spot-desc">유네스코 세계문화유산. 이슬람·고딕·르네상스 양식 융합의 걸작. 왕좌의 게임 촬영지. 사전 예약 필수. 입장료 €12.50.</div>
+<div class="food-near"><span class="food-near-chip">🥩 <strong>Sal Gorda</strong> — 소꼬리찜 Rabo de Toro (€18)</span><span class="food-near-chip">🫒 <strong>Bar Las Teresas</strong> — 전통 타파스 바 (€3~5)</span><span class="food-near-chip">🍊 <strong>Heladería Rayas</strong> — 세비야 오렌지 아이스크림 (€3)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">⛪</div>
-            <div><div class="spot-name">세비야 대성당 (Catedral de Sevilla)</div><div class="spot-desc">세계 최대 고딕 성당. 콜럼버스의 묘가 안치되어 있어요. 히랄다 탑에서 세비야 전경 감상 가능. 입장료 €11.</div></div>
+            <div><div class="spot-name">세비야 대성당 (Catedral de Sevilla)</div><div class="spot-desc">세계 최대 고딕 성당. 콜럼버스의 묘가 안치되어 있어요. 히랄다 탑에서 세비야 전경 감상 가능. 입장료 €11.</div>
+<div class="food-near"><span class="food-near-chip">🍋 <strong>El Moderno</strong> — 가스파초+타파스 (€5)</span><span class="food-near-chip">🫒 <strong>Bar Alfalfa</strong> — 핀초스+이베리코 햄 (€4)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🎡</div>
-            <div><div class="spot-name">스페인 광장 (Plaza de España)</div><div class="spot-desc">스타워즈·아라비아의 로렌스 촬영지. 화려한 세라믹 타일 장식의 반원형 광장. 여름엔 라이브 쇼도 진행. 입장 무료.</div></div>
+            <div><div class="spot-name">스페인 광장 (Plaza de España)</div><div class="spot-desc">스타워즈·아라비아의 로렌스 촬영지. 화려한 세라믹 타일 장식의 반원형 광장. 여름엔 라이브 쇼도 진행. 입장 무료.</div>
+<div class="food-near"><span class="food-near-chip">🍦 <strong>Heladería Rayas</strong> — 오렌지 젤라토 (€3, 광장 근처)</span><span class="food-near-chip">🍋 <strong>가스파초</strong> — 세비야 냉채 수프, 근처 카페 (€4)</span><span class="food-near-chip">🥩 <strong>Restaurante Oriza</strong> — 안달루시아 요리 (€25)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🍄</div>
-            <div><div class="spot-name">메트로폴 파라솔 (Las Setas) 전망대</div><div class="spot-desc">세계 최대 목조 구조물. 현지에선 '버섯'이라 불러요. 해질녘 일몰 전망 포인트. 입장료 €5 (음료 포함).</div></div>
+            <div><div class="spot-name">메트로폴 파라솔 (Las Setas) 전망대</div><div class="spot-desc">세계 최대 목조 구조물. 현지에선 '버섯'이라 불러요. 해질녘 일몰 전망 포인트. 입장료 €5 (음료 포함).</div>
+<div class="food-near"><span class="food-near-chip">🍺 <strong>Bar Eslava</strong> — 세비야 인기 1위 타파스 바 (€3~5)</span><span class="food-near-chip">🥩 <strong>파라솔 내 레스토랑</strong> — 전망+음료 포함 (입장료 €5)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">💃</div>
-            <div><div class="spot-name">플라멩코 공연</div><div class="spot-desc">안달루시아 문화의 꽃. 세비야는 플라멩코 본고장. 테아트로 플라멩코 세비야 등에서 저녁 공연 사전 예약 추천.</div></div>
+            <div><div class="spot-name">플라멩코 공연</div><div class="spot-desc">안달루시아 문화의 꽃. 세비야는 플라멩코 본고장. 테아트로 플라멩코 세비야 등에서 저녁 공연 사전 예약 추천.</div>
+<div class="food-near"><span class="food-near-chip">🍷 <strong>공연장 내 상그리아</strong> — 공연 중 음료 (€7~10)</span><span class="food-near-chip">🥩 <strong>공연 전 타파스</strong> — Bar El Rinconcillo (€4, 도보 10분)</span></div></div>
           </li>
         </ul>
+        <div class="section-sub">🗺️ 추천 동선 & 이동 시간</div>
+        <div class="travel-flow">
+  <span class="tf-stop">🏨 호텔</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 10분</span> →</span>
+  <span class="tf-stop">🏰 알카사르 왕궁</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 2분</span> →</span>
+  <span class="tf-stop">⛪ 세비야 대성당</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 20분</span> →</span>
+  <span class="tf-stop">🍄 메트로폴 파라솔</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 15분</span> →</span>
+  <span class="tf-stop">💃 플라멩코 공연</span>
+</div>
         <div class="tip-box"><div class="tip-label">💡 세비야 팁</div>9월 세비야는 유럽에서 가장 더운 도시 중 하나예요(35°C+). 오전 일찍 명소 돌고 오후 2–5시는 카페에서 휴식, 저녁에 다시 나가는 현지인 스타일로 움직이세요.</div>
       </div>
     </div>
@@ -699,43 +1402,99 @@
 <!-- ============================================================ -->
 <!-- ======================= 5. 론다 ========================== -->
 <!-- ============================================================ -->
-<div class="city-block">
+<div class="city-block" data-city="Ronda Spain">
   <div class="city-header" onclick="toggleCity(this)">
-    <div class="city-header-top"><div class="city-dot" style="background:#d4930e"></div><div class="city-name">🇪🇸 론다 Ronda</div><div class="city-toggle">▼</div></div>
-    <div class="city-header-sub"><div class="city-badge">10/1–10/2 · 2박</div><div class="city-weather">🌤️ 20–26°C</div></div>
+    <div class="city-dot" style="background:#d4930e"></div>
+    <div class="city-name">🇪🇸 론다 Ronda</div>
+    <div class="city-badge">10/1 · 1박</div>
+    <div class="city-weather">🌤️ 20–26°C</div>
+    <div class="city-toggle">▼</div>
   </div>
   <div class="city-body">
     <div class="city-intro">
       <strong>절벽 위의 낭만 도시.</strong> 헤밍웨이가 사랑한 도시로, 깊은 협곡(타호 협곡) 위에 세워진 마을과 누에보 다리가 압도적인 풍경을 자랑해요. 자하라 호수와 함께 안달루시아 가이드 투어 포함.
+      <div class="luggage-box" style="margin-top:8px">
+  <div class="tip-label">🧳 28인치 캐리어 2개 이동 주의</div>
+  ⚠️ 론다는 절벽 위 도시라 <strong>기차역에서 시내까지 오르막길 + 돌바닥</strong>이에요.<br>
+  • 투어 차량으로 이동하므로 세비야 → 론다 짐 이동은 OK.<br>
+  • 호텔 체크인 후 시내 관광 시 캐리어는 <strong>반드시 호텔 보관</strong>.<br>
+  • 누에보 다리 주변·구시가지 골목은 좁고 경사 있어 캐리어 이동 불가.<br>
+  • 10/2 그라나다 이동 시: 기차/버스 탑승장까지 <strong>택시 이용 강력 권장</strong>.
+</div>
     </div>
 
     <!-- 10/1 -->
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label tour">투어</div>
-        <div class="day-title-main"><div class="day-desc">10/1(목) — 오전 자유 + 자하라 호수 & 론다 야경 투어</div><div class="day-tags"><span class="tag tag-free">자유관광</span><span class="tag tag-tour">가이드투어</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">10/1(목) — 오전 자유 + 자하라 호수 & 론다 야경 투어</div>
+        <div class="day-tags"><span class="tag tag-free">자유관광</span><span class="tag tag-tour">가이드투어</span></div>
       </div>
       <div class="day-content">
         <div class="info-grid">
-          <div class="info-box"><div class="info-box-label">🚌 가이드 투어</div><div class="info-box-val">전용 차량 + 가이드<br>하절기 15:00–19:00<br>포함: 가이드비·차량비<br>불포함: 식사비·입장료</div></div>
+          <div class="info-box"><div class="info-box-label">🚌 가이드 투어</div><div class="info-box-val">전용 차량 + 가이드<br>하절기 <strong>15:00–19:00</strong><br>포함: 가이드비·차량비<br>불포함: 식사비·입장료</div></div>
           <div class="info-box"><div class="info-box-label">🏨 체크인</div><div class="info-box-val">세비야 체크아웃 후<br>론다 호텔 체크인<br>(투어 후 호텔로 이동)</div></div>
         </div>
-        <div class="section-sub">📍 투어 코스</div>
+        <div class="warn-box" style="margin-bottom:12px">
+          <div class="tip-label">⏱️ 10/1 이동 타임라인</div>
+          <b>~10:00</b> 세비야 호텔 체크아웃 →
+          <b>10:00–14:30</b> 세비야 오전 자유관광 (짐은 호텔 보관) →
+          <b>14:30</b> 투어 미팅 장소 이동 →
+          <b>15:00–19:00</b> 자하라 호수 & 론다 가이드 투어 →
+          <b>19:00~</b> 론다 호텔 체크인
+        </div>
+        <div class="section-sub">☀️ 오전 세비야 마지막 코스 (약 4시간)</div>
+        <ul class="spot-list">
+          <li class="spot-item">
+            <div class="spot-icon">🏰</div>
+            <div><div class="spot-name">알카사르 왕궁 (Real Alcázar) — 사전 예약 필수</div><div class="spot-desc">유네스코 세계문화유산. 이슬람·고딕·르네상스 융합 건축의 걸작. 왕좌의 게임 촬영지. 오전 개장(9:30) 직후 방문 시 대기 없이 쾌적하게 관람 가능. 입장료 €12.50.</div>
+<div class="food-near"><span class="food-near-chip">🥩 <strong>Sal Gorda</strong> — 소꼬리찜 Rabo de Toro (€18)</span><span class="food-near-chip">🫒 <strong>Bar Las Teresas</strong> — 전통 타파스 바 (€3~5)</span></div></div>
+          </li>
+          <li class="spot-item">
+            <div class="spot-icon">⛪</div>
+            <div><div class="spot-name">세비야 대성당 & 히랄다 탑</div><div class="spot-desc">세계 최대 고딕 성당. 콜럼버스의 묘 안치. 히랄다 탑(35층 높이) 전망에서 세비야 전경 감상. 입장료 €11. 알카사르와 도보 2분 거리.</div>
+<div class="food-near"><span class="food-near-chip">🫒 <strong>Bar Las Teresas</strong> — 세비야 전통 타파스 (€3~5)</span><span class="food-near-chip">🍋 <strong>가스파초</strong> — 냉채 수프+빵, 근처 카페 (€5)</span></div></div>
+          </li>
+          <li class="spot-item">
+            <div class="spot-icon">🍄</div>
+            <div><div class="spot-name">메트로폴 파라솔 (Las Setas) 점심 후 전망</div><div class="spot-desc">버섯 모양 세계 최대 목조 구조물. 1층 지하는 고고학 박물관, 상층부에 레스토랑 겸 전망대. 점심 먹고 잠깐 올라가기 좋아요. 입장 €5 (음료 포함).</div></div>
+          </li>
+          <li class="spot-item">
+            <div class="spot-icon">🥩</div>
+            <div><div class="spot-name">점심 — 소꼬리찜 (Rabo de Toro)</div><div class="spot-desc">세비야 대표 음식을 투어 출발 전 든든하게 즐기세요. Sal Gorda 레스토랑 추천. 13:00–14:00 사이 여유 있게 식사 후 투어 집결지로 이동.</div></div>
+          </li>
+        </ul>
+        <div class="section-sub">🗺️ 추천 동선 & 이동 시간</div>
+        <div class="travel-flow">
+  <span class="tf-stop">🏨 호텔 (체크아웃, 짐 보관)</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 10분</span> →</span>
+  <span class="tf-stop">🏰 알카사르 (09:30 개장)</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 2분</span> →</span>
+  <span class="tf-stop">⛪ 세비야 대성당</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 20분</span> →</span>
+  <span class="tf-stop">🥩 점심 Sal Gorda</span>
+  <span class="tf-arrow">→ <span class="tf-time">택시 10분</span> →</span>
+  <span class="tf-stop">🚌 투어 집결지 (14:30)</span>
+</div>
+        <div class="section-sub">🚌 투어 코스 (15:00 출발)</div>
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">💙</div>
-            <div><div class="spot-name">자하라 호수 (Embalse de Zahara)</div><div class="spot-desc">하얀 사하라 마을(Zahara de la Sierra)과 에메랄드빛 호수의 환상적인 조합. 안달루시아 '하얀 마을(Pueblos Blancos)' 중 가장 아름다운 곳 중 하나.</div></div>
+            <div><div class="spot-name">자하라 호수 (Embalse de Zahara)</div><div class="spot-desc">하얀 사하라 마을(Zahara de la Sierra)과 에메랄드빛 호수의 환상적인 조합. 안달루시아 '하얀 마을(Pueblos Blancos)' 중 가장 아름다운 곳 중 하나.</div>
+<div class="food-near"><span class="food-near-chip">🥩 <strong>Bar El Gallo</strong> — 자하라 마을 소박한 타파스 (€3)</span><span class="food-near-chip">🫒 <strong>Venta El Cerero</strong> — 시골 타베르나 점심 (€12)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🌉</div>
-            <div><div class="spot-name">론다 누에보 다리 & 야경</div><div class="spot-desc">타호 협곡 위 18세기 석조 다리. 헤밍웨이 소설 배경. 협곡 아래 전망 포인트와 투우 경기장 관람 포함.</div></div>
+            <div><div class="spot-name">론다 누에보 다리 & 야경</div><div class="spot-desc">타호 협곡 위 18세기 석조 다리. 헤밍웨이 소설 배경. 협곡 아래 전망 포인트와 투우 경기장 관람 포함.</div>
+<div class="food-near"><span class="food-near-chip">🥩 <strong>Restaurante Pedro Romero</strong> — 소꼬리찜+론다 와인 (€20)</span><span class="food-near-chip">🍷 <strong>Tragabuches</strong> — 론다 스타 레스토랑 (€30)</span><span class="food-near-chip">🫒 <strong>Bar El Lechuguita</strong> — 현지 타파스 (€3)</span></div></div>
           </li>
         </ul>
         <div class="section-sub">📍 오전 자유관광</div>
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🏛️</div>
-            <div><div class="spot-name">론다 구시가지 & 아랍 목욕탕</div><div class="spot-desc">스페인에서 가장 잘 보존된 아랍 목욕탕(Baños Arabes) 중 하나. 13세기 건축.</div></div>
+            <div><div class="spot-name">론다 구시가지 & 아랍 목욕탕</div><div class="spot-desc">스페인에서 가장 잘 보존된 아랍 목욕탕(Baños Arabes) 중 하나. 13세기 건축.</div>
+<div class="food-near"><span class="food-near-chip">🫒 <strong>Bar Toro</strong> — 문어 타파스+론다 와인 (€5)</span><span class="food-near-chip">☕ <strong>Café Restaurante Almocábar</strong> — 아침 카페 콘 레체 (€2)</span></div></div>
           </li>
         </ul>
       </div>
@@ -745,13 +1504,35 @@
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label transfer">이동</div>
-        <div class="day-title-main"><div class="day-desc">10/2(금) — 론다 → 그라나다 열차 이동</div><div class="day-tags"><span class="tag tag-transfer">이동</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">10/2(금) — 론다 → 그라나다 열차 이동</div>
+        <div class="day-tags"><span class="tag tag-transfer">이동</span></div>
       </div>
       <div class="day-content">
         <div class="info-grid">
-          <div class="info-box"><div class="info-box-label">🚂 열차/버스</div><div class="info-box-val">론다 출발<br>말라가 또는 안테퀘라 경유<br>→ 그라나다역 도착<br>(스케줄 출발 전 확정)</div></div>
+          <div class="info-box"><div class="info-box-label">🚂 열차/버스 (스케줄 오픈 전)</div><div class="info-box-val">론다 출발<br>말라가 또는 안테퀘라 경유<br>그라나다역 도착<br><span style="font-size:11px;color:#aaa">희망 시간대 있으면 담당자에게 전달</span></div></div>
           <div class="info-box"><div class="info-box-label">🌅 출발 전</div><div class="info-box-val">론다 누에보 다리에서<br>아침 사진 촬영 추천<br>(이른 아침이 빛이 좋아요)</div></div>
         </div>
+        <div class="warn-box" style="margin-bottom:12px">
+          <div class="tip-label">⏱️ 10/2 이동 타임라인</div>
+          <b>07:00–08:00</b> 이른 아침 누에보 다리 사진 (황금빛 아침 빛) →
+          <b>~10:00</b> 호텔 체크아웃 →
+          <b>오전 중</b> 론다 구시가지 짧은 산책 →
+          <b>열차/버스 출발 전</b> 역·터미널로 이동 →
+          <b>그라나다역 도착 후</b> 호텔 체크인 → 알바이신 저녁 관광
+        </div>
+        <div class="section-sub">🌄 출발 전 론다 아침 코스</div>
+        <ul class="spot-list">
+          <li class="spot-item">
+            <div class="spot-icon">🌉</div>
+            <div><div class="spot-name">누에보 다리 일출 뷰 (07:00–08:00)</div><div class="spot-desc">전날 야경에 이어 아침 빛의 누에보 다리는 완전히 다른 분위기. 협곡 아래 전망 포인트(Puente Nuevo Viewpoint)에서 촬영. 이른 아침엔 관광객 없이 독점 뷰 가능.</div>
+<div class="food-near"><span class="food-near-chip">☕ <strong>Bar Alameda</strong> — 카페 콘 레체+토스타다 (€3, 구시가지 중심)</span></div></div>
+          </li>
+          <li class="spot-item">
+            <div class="spot-icon">🏛️</div>
+            <div><div class="spot-name">론다 구시가지 산책 & 아침 카페</div><div class="spot-desc">체크아웃 전 호텔 조식 후 구시가지 골목 짧은 산책. 론다 특산 와인 한 병을 기념품으로 구매하기 좋은 타이밍.</div>
+<div class="food-near"><span class="food-near-chip">🍷 <strong>Bodegas López Pellón</strong> — 론다 와인 기념품 (€8~)</span><span class="food-near-chip">🥐 <strong>Pastelería Campillo</strong> — 론다 전통 과자 (€2)</span></div></div>
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -774,38 +1555,52 @@
       </div>
     </div>
 
-    <div class="hotel-row"><span class="hotel-icon">🏨</span> Catalonia Reina Victoria Wellness & Spa 또는 동급 · 2박 (10/1–10/2)</div>
+    <div class="hotel-row"><span class="hotel-icon">🏨</span> Catalonia Reina Victoria Wellness & Spa 또는 동급 · 1박 (10/1)</div>
   </div>
 </div>
 
 <!-- ============================================================ -->
 <!-- ====================== 6. 그라나다 ========================= -->
 <!-- ============================================================ -->
-<div class="city-block">
+<div class="city-block" data-city="Granada Spain">
   <div class="city-header" onclick="toggleCity(this)">
-    <div class="city-header-top"><div class="city-dot" style="background:#d4930e"></div><div class="city-name">🇪🇸 그라나다 Granada</div><div class="city-toggle">▼</div></div>
-    <div class="city-header-sub"><div class="city-badge">10/2–10/3 · 1박</div><div class="city-weather">🌤️ 18–24°C</div></div>
+    <div class="city-dot" style="background:#d4930e"></div>
+    <div class="city-name">🇪🇸 그라나다 Granada</div>
+    <div class="city-badge">10/2–10/3 · 1박</div>
+    <div class="city-weather">🌤️ 18–24°C</div>
+    <div class="city-toggle">▼</div>
   </div>
   <div class="city-body">
     <div class="city-intro">
       <strong>이슬람 문명의 마지막 꽃, 알함브라.</strong> 스페인에서 이슬람 왕국이 가장 오래 지속된 도시. 알함브라 궁전은 이슬람 최고의 건축물로, 세계에서 가장 아름다운 궁전 중 하나로 손꼽혀요. 입장권은 최소 3개월 전 예약 필수!
+      <div class="luggage-box" style="margin-top:8px">
+  <div class="tip-label">🧳 28인치 캐리어 2개 이동 주의</div>
+  ⚠️ 알바이신 지구·알함브라 오르막 모두 <strong>급경사 + 돌바닥</strong>으로 캐리어 이동 최악의 조건이에요.<br>
+  • 알함브라 입장 시 원내 이동만 도보 2–3km → 캐리어 절대 금지.<br>
+  • 기차역 → 호텔은 반드시 <strong>택시 이용</strong>.<br>
+  • 관광 전 짐은 <strong>100% 호텔 보관</strong>. 알바이신 골목은 캐리어 불가.<br>
+  • 10/3 공항 이동: 그라나다 공항 시내에서 약 20–25분, <strong>택시 이용</strong> (버스 짐 탑재 불편).
+</div>
     </div>
 
     <!-- 10/2 저녁 -->
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label free">자유</div>
-        <div class="day-title-main"><div class="day-desc">10/2(금) 저녁 — 그라나다 도착 · 알바이신 지구 산책</div><div class="day-tags"><span class="tag tag-free">자유관광</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">10/2(금) 저녁 — 그라나다 도착 · 알바이신 지구 산책</div>
+        <div class="day-tags"><span class="tag tag-free">자유관광</span></div>
       </div>
       <div class="day-content">
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🌙</div>
-            <div><div class="spot-name">산 니콜라스 전망대 (Mirador de San Nicolás)</div><div class="spot-desc">알함브라 궁전을 정면으로 바라볼 수 있는 최고의 뷰포인트. 일몰 직전 방문하면 황금빛 알함브라를 볼 수 있어요.</div></div>
+            <div><div class="spot-name">산 니콜라스 전망대 (Mirador de San Nicolás)</div><div class="spot-desc">알함브라 궁전을 정면으로 바라볼 수 있는 최고의 뷰포인트. 일몰 직전 방문하면 황금빛 알함브라를 볼 수 있어요.</div>
+<div class="food-near"><span class="food-near-chip">🍽️ <strong>El Trillo</strong> — 알함브라 뷰 테라스 레스토랑 (€20)</span><span class="food-near-chip">☕ <strong>Mirador de Aixa</strong> — 전망대 카페+케이크 (€5)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🏘️</div>
-            <div><div class="spot-name">알바이신 지구 (Albaicín)</div><div class="spot-desc">유네스코 세계문화유산인 무어인 거주 구역. 하얀 집들과 좁은 골목길이 중세 이슬람 도시의 분위기를 자아내요.</div></div>
+            <div><div class="spot-name">알바이신 지구 (Albaicín)</div><div class="spot-desc">유네스코 세계문화유산인 무어인 거주 구역. 하얀 집들과 좁은 골목길이 중세 이슬람 도시의 분위기를 자아내요.</div>
+<div class="food-near"><span class="food-near-chip">🍵 <strong>Tetería Nazarí</strong> — 모로코 민트차+바클라바 (€4)</span><span class="food-near-chip">🫒 <strong>Bar El Viñón</strong> — 그라나다식 무료 타파스 (음료 주문 시)</span><span class="food-near-chip">🥙 <strong>Calle Calderería</strong> — 아랍 거리 케밥+빵 (€5)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">☕</div>
@@ -819,7 +1614,8 @@
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label tour">투어</div>
-        <div class="day-title-main"><div class="day-desc">10/3(토) — 알함브라 가이드 투어 · 바르셀로나 이동</div><div class="day-tags"><span class="tag tag-tour">가이드투어</span><span class="tag tag-transfer">이동</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">10/3(토) — 알함브라 가이드 투어 · 바르셀로나 이동</div>
+        <div class="day-tags"><span class="tag tag-tour">가이드투어</span><span class="tag tag-transfer">이동</span></div>
       </div>
       <div class="day-content">
         <div class="info-grid">
@@ -830,23 +1626,62 @@
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🌿</div>
-            <div><div class="spot-name">헤네랄리페 (Generalife)</div><div class="spot-desc">이슬람 왕들의 여름 별궁. 아름다운 정원과 분수. 꽃이 만개하는 아름다운 정원.</div></div>
+            <div><div class="spot-name">헤네랄리페 (Generalife)</div><div class="spot-desc">이슬람 왕들의 여름 별궁. 아름다운 정원과 분수. 꽃이 만개하는 아름다운 정원.</div>
+<div class="food-near"><span class="food-near-chip">🍽️ <strong>Parador de Granada</strong> — 알함브라 내 고급 레스토랑 (€35)</span><span class="food-near-chip">☕ <strong>알함브라 내 카페</strong> — 커피+샌드위치 (€6, 관람 중 휴식)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🏯</div>
-            <div><div class="spot-name">알카사바 (Alcazaba)</div><div class="spot-desc">그라나다 시내가 한눈에 내려다보이는 군사 요새. 가장 오래된 구역.</div></div>
+            <div><div class="spot-name">알카사바 (Alcazaba)</div><div class="spot-desc">그라나다 시내가 한눈에 내려다보이는 군사 요새. 가장 오래된 구역.</div>
+<div class="food-near"><span class="food-near-chip">🍽️ <strong>Restaurante La Mimbre</strong> — 알함브라 내 전통 요리 (€20)</span><span class="food-near-chip">🫒 <strong>타파스+상그리아</strong> — 관람 후 구시가지 Bar (€4)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">✨</div>
-            <div><div class="spot-name">나사리 궁전 (Palacios Nazaríes)</div><div class="spot-desc">알함브라의 하이라이트. 세계 최고의 이슬람 건축물. 정교한 아라베스크 문양과 스탈락타이트 천장이 압도적.</div></div>
+            <div><div class="spot-name">나사리 궁전 (Palacios Nazaríes)</div><div class="spot-desc">알함브라의 하이라이트. 세계 최고의 이슬람 건축물. 정교한 아라베스크 문양과 스탈락타이트 천장이 압도적.</div>
+<div class="food-near"><span class="food-near-chip">🍽️ <strong>Restaurante Jardines Alberto</strong> — 알함브라 뷰 (€22)</span><span class="food-near-chip">🥩 <strong>Bodegas Castañeda</strong> — 그라나다 무료 타파스 (음료+타파스)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🏛️</div>
-            <div><div class="spot-name">까를로스 5세 궁전</div><div class="spot-desc">르네상스 양식의 원형 궁전. 이슬람 건축 안에 서 있는 유럽 건축의 이색적 조화.</div></div>
+            <div><div class="spot-name">까를로스 5세 궁전</div><div class="spot-desc">르네상스 양식의 원형 궁전. 이슬람 건축 안에 서 있는 유럽 건축의 이색적 조화.</div>
+<div class="food-near"><span class="food-near-chip">☕ <strong>알함브라 내 카페</strong> — 아메리카노+피카토스테 (€4)</span><span class="food-near-chip">🍦 <strong>그라나다 아이스크림</strong> — 관람 후 Heladería Los Italianos (€3)</span></div></div>
           </li>
         </ul>
-        <div class="info-grid">
-          <div class="info-box"><div class="info-box-label">✈️ 그라나다 → 바르셀로나</div><div class="info-box-val">알함브라 투어 후 그라나다 국제공항으로 이동<br>→ 바르셀로나 도착 후 1커플 단독 픽업</div></div>
+        <div class="warn-box" style="margin:12px 0">
+          <div class="tip-label">⏱️ 10/3 이동 타임라인</div>
+          <b>오전 9시 또는 오후 2시</b> 알함브라 투어 시작 (약 4시간) →
+          <b>투어 종료 후</b> 그라나다 시내 자유시간 →
+          <b>17:30</b> 그라나다 공항 출발 (시내 → 공항 택시 약 20–25분) →
+          <b>18:00</b> 탑승 수속 →
+          <b>19:30</b> 부엘링 탑승 → 바르셀로나 <b>21:00</b> 도착
+        </div>
+        <div class="section-sub">🕐 알함브라 투어 후 자유시간</div>
+        <ul class="spot-list">
+          <li class="spot-item">
+            <div class="spot-icon">☕</div>
+            <div><div class="spot-name">El Huerto de Juan Ranas — 알함브라 뷰 테라스 카페</div><div class="spot-desc">알함브라를 바라보며 음료 한 잔. 오전 투어 후 여유 있을 때 특히 추천. 투어의 여운을 이 뷰로 마무리하세요.</div></div>
+          </li>
+          <li class="spot-item">
+            <div class="spot-icon">🍫</div>
+            <div><div class="spot-name">알바이신 아랍 거리 — 마지막 츄러스 & 민트차</div><div class="spot-desc">Calle Calderería Nueva 거리의 모로코식 찻집에서 바클라바와 민트차. 공항 이동 전 여유 있을 경우 들르기 좋아요.</div></div>
+          </li>
+          <li class="spot-item">
+            <div class="spot-icon">🆓</div>
+            <div><div class="spot-name">그라나다 타파스 투어 — 마지막 무료 타파스</div><div class="spot-desc">그라나다 유일의 전통, 음료 주문 시 타파스 무료! 공항 이동 전 바르 2–3곳을 돌며 저녁 식사를 해결하는 것도 좋아요. Bodegas Castañeda 추천.</div></div>
+          </li>
+        </ul>
+        <div class="section-sub">🗺️ 추천 동선 & 이동 시간</div>
+        <div class="travel-flow">
+  <span class="tf-stop">🏨 호텔</span>
+  <span class="tf-arrow">→ <span class="tf-time">택시 10분</span> →</span>
+  <span class="tf-stop">🏰 알함브라 매표소</span>
+  <span class="tf-arrow">→ <span class="tf-time">원내 도보 2–3km</span> →</span>
+  <span class="tf-stop">투어 완료</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보·택시 15분</span> →</span>
+  <span class="tf-stop">☕ 알바이신 카페</span>
+  <span class="tf-arrow">→ <span class="tf-time">택시 25분</span> →</span>
+  <span class="tf-stop">✈️ 그라나다 공항 (17:30)</span>
+</div>
+        <div class="info-grid" style="margin-top:12px">
+          <div class="info-box"><div class="info-box-label">✈️ 부엘링 (위탁 25kg)</div><div class="info-box-val">그라나다 <strong>19:30</strong> 출발<br>바르셀로나 <strong>21:00</strong> 도착<br>도착 후 1커플 단독 픽업<br><span style="font-size:11px;color:#aaa">30kg 변경 시 1인 €13 추가 (발권 전)</span></div></div>
           <div class="info-box"><div class="info-box-label">📅 휴관일</div><div class="info-box-val">1/1 · 6/8 · 11/16 · 12/25<br>해당 날짜 투어 불가</div></div>
         </div>
       </div>
@@ -891,21 +1726,32 @@
 <!-- ============================================================ -->
 <!-- ====================== 7. 바르셀로나 ======================= -->
 <!-- ============================================================ -->
-<div class="city-block">
+<div class="city-block" data-city="Barcelona Spain">
   <div class="city-header" onclick="toggleCity(this)">
-    <div class="city-header-top"><div class="city-dot" style="background:#7F77DD"></div><div class="city-name">🇪🇸 바르셀로나 Barcelona</div><div class="city-toggle">▼</div></div>
-    <div class="city-header-sub"><div class="city-badge">10/3–10/7 · 5박</div><div class="city-weather">🌤️ 20–25°C</div></div>
+    <div class="city-dot" style="background:#7F77DD"></div>
+    <div class="city-name">🇪🇸 바르셀로나 Barcelona</div>
+    <div class="city-badge">10/3–10/7 · 5박</div>
+    <div class="city-weather">🌤️ 20–25°C</div>
+    <div class="city-toggle">▼</div>
   </div>
   <div class="city-body">
     <div class="city-intro">
       <strong>가우디와 카탈루냐 열정의 도시.</strong> 사그라다 파밀리아, 구엘 공원, 람블라스 거리, 고딕 지구로 유명한 스페인 최고의 여행 도시. 가이드 투어·허니문 스냅 촬영이 포함되어 있어요. 귀국 전 마지막 여운을 만끽하는 곳.
+      <div class="luggage-box" style="margin-top:8px">
+  <div class="tip-label">🧳 28인치 캐리어 2개 이동 주의</div>
+  포르투·리스본·그라나다보다 상대적으로 <strong>이동하기 편한 도시</strong>예요.<br>
+  • 고딕 지구·람블라스 일부는 돌바닥이나 주요 도로는 아스팔트.<br>
+  • 구엘 공원은 계단 많음 → 짐은 호텔 보관 필수.<br>
+  • 공항 이동(10/7): 캐리어 2개 + 공항버스는 불편 → <strong>택시 이용 권장</strong> (약 40분, €35–45).
+</div>
     </div>
 
     <!-- 10/3 -->
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label transfer">이동</div>
-        <div class="day-title-main"><div class="day-desc">10/3(토) — 그라나다 → 바르셀로나 도착 · 체크인</div><div class="day-tags"><span class="tag tag-transfer">이동</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">10/3(토) — 그라나다 → 바르셀로나 도착 · 체크인</div>
+        <div class="day-tags"><span class="tag tag-transfer">이동</span></div>
       </div>
       <div class="day-content">
         <div class="tip-box"><div class="tip-label">💡 팁</div>알함브라 투어 후 이동이라 피곤할 수 있어요. 체크인 후 바르셀로나 숙소 주변 타파스 바에서 가볍게 저녁 먹고 휴식 추천.</div>
@@ -916,7 +1762,8 @@
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label tour">투어</div>
-        <div class="day-title-main"><div class="day-desc">10/4(일) — 가우디 투어 + 허니문 스냅 촬영</div><div class="day-tags"><span class="tag tag-tour">가이드투어</span><span class="tag tag-snap">스냅촬영</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">10/4(일) — 가우디 투어 + 허니문 스냅 촬영</div>
+        <div class="day-tags"><span class="tag tag-tour">가이드투어</span><span class="tag tag-snap">스냅촬영</span></div>
       </div>
       <div class="day-content">
         <div class="info-grid">
@@ -927,21 +1774,37 @@
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🏠</div>
-            <div><div class="spot-name">까사 바트요 (Casa Batlló) — 외부 관람</div><div class="spot-desc">가우디의 대표작. 뼈와 용을 모티프로 한 독특한 외관. 유네스코 세계문화유산.</div></div>
+            <div><div class="spot-name">까사 바트요 (Casa Batlló) — 외부 관람</div><div class="spot-desc">가우디의 대표작. 뼈와 용을 모티프로 한 독특한 외관. 유네스코 세계문화유산.</div>
+<div class="food-near"><span class="food-near-chip">🍦 <strong>Amorino</strong> — 젤라토 (€4, 파세이그 데 그라시아)</span><span class="food-near-chip">🥩 <strong>Cervecería Catalana</strong> — 타파스+카바 (€15)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🏗️</div>
-            <div><div class="spot-name">까사 밀라 (Casa Milà, La Pedrera) — 외부 관람</div><div class="spot-desc">'채석장'이라는 별명처럼 굴곡진 파사드. 옥상의 독특한 굴뚝이 유명.</div></div>
+            <div><div class="spot-name">까사 밀라 (Casa Milà, La Pedrera) — 외부 관람</div><div class="spot-desc">'채석장'이라는 별명처럼 굴곡진 파사드. 옥상의 독특한 굴뚝이 유명.</div>
+<div class="food-near"><span class="food-near-chip">🥩 <strong>Parking Pizza</strong> — 화덕 피자+와인 (€18)</span><span class="food-near-chip">🥐 <strong>Forn de Sant Jaume</strong> — 카탈루냐 빵+커피 (€4)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🌳</div>
-            <div><div class="spot-name">구엘 공원 (Park Güell) — 내부 관람</div><div class="spot-desc">가우디가 설계한 동화 속 공원. 모자이크 타일 도마뱀 분수와 계단이 포토 스팟. 구역별 입장권 사전 예약 필수.</div></div>
+            <div><div class="spot-name">구엘 공원 (Park Güell) — 내부 관람</div><div class="spot-desc">가우디가 설계한 동화 속 공원. 모자이크 타일 도마뱀 분수와 계단이 포토 스팟. 구역별 입장권 사전 예약 필수.</div>
+<div class="food-near"><span class="food-near-chip">🥪 <strong>La Pepita</strong> — 몬타디토 샌드위치 (€3, 그라시아 지구)</span><span class="food-near-chip">☕ <strong>공원 내 키오스크</strong> — 아메리카노+크루아상 (€4)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">⛪</div>
-            <div><div class="spot-name">사그라다 파밀리아 (Sagrada Família) — 외부 관람</div><div class="spot-desc">가우디의 필생의 역작. 1882년 착공, 아직 건설 중. 세계에서 가장 독특한 성당. 내부 입장 시 사전 예약 필수(€26~).</div></div>
+            <div><div class="spot-name">사그라다 파밀리아 (Sagrada Família) — 외부 관람</div><div class="spot-desc">가우디의 필생의 역작. 1882년 착공, 아직 건설 중. 세계에서 가장 독특한 성당. 내부 입장 시 사전 예약 필수(€26~).</div>
+<div class="food-near"><span class="food-near-chip">🍕 <strong>Bar Calders</strong> — Sant Antoni 현지 맛집 타파스 (€12)</span><span class="food-near-chip">🥩 <strong>El Nacional</strong> — 바르셀로나 4가지 요리 공간 (€20)</span></div></div>
           </li>
         </ul>
+        <div class="section-sub">🗺️ 추천 동선 & 이동 시간</div>
+        <div class="travel-flow">
+  <span class="tf-stop">🏨 호텔 (09:00 미팅)</span>
+  <span class="tf-arrow">→ <span class="tf-time">차량 5분</span> →</span>
+  <span class="tf-stop">🏠 까사 바트요</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🏗️ 까사 밀라</span>
+  <span class="tf-arrow">→ <span class="tf-time">차량 20분</span> →</span>
+  <span class="tf-stop">🌳 구엘 공원</span>
+  <span class="tf-arrow">→ <span class="tf-time">차량 15분</span> →</span>
+  <span class="tf-stop">⛪ 사그라다 파밀리아</span>
+</div>
       </div>
     </div>
 
@@ -949,24 +1812,38 @@
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label free">자유</div>
-        <div class="day-title-main"><div class="day-desc">10/5(월) — 전일 자유관광</div><div class="day-tags"><span class="tag tag-free">자유관광</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">10/5(월) — 전일 자유관광</div>
+        <div class="day-tags"><span class="tag tag-free">자유관광</span></div>
       </div>
       <div class="day-content">
         <div class="section-sub">📍 추천 코스 — 구시가지 & 해변</div>
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🏰</div>
-            <div><div class="spot-name">고딕 지구 (Barri Gòtic)</div><div class="spot-desc">중세 로마 시대부터 이어진 골목길. 바르셀로나 대성당, 왕의 광장, 숨겨진 카페들. 미로처럼 걸어다니는 재미.</div></div>
+            <div><div class="spot-name">고딕 지구 (Barri Gòtic)</div><div class="spot-desc">중세 로마 시대부터 이어진 골목길. 바르셀로나 대성당, 왕의 광장, 숨겨진 카페들. 미로처럼 걸어다니는 재미.</div>
+<div class="food-near"><span class="food-near-chip">🍾 <strong>El Xampanyet</strong> — 카바+타파스 (€4, 고딕 명물)</span><span class="food-near-chip">🥩 <strong>Bar del Pi</strong> — 카페 콘 레체+핀초스 (€5)</span><span class="food-near-chip">🧀 <strong>La Boqueria 인근</strong> — 하몽+치즈 테이스팅 (€8)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🌊</div>
-            <div><div class="spot-name">바르셀로네타 해변 (Barceloneta)</div><div class="spot-desc">도심에서 도보로 닿는 지중해 해변. 해변가 테라스에서 파에야와 상그리아로 점심.</div></div>
+            <div><div class="spot-name">바르셀로네타 해변 (Barceloneta)</div><div class="spot-desc">도심에서 도보로 닿는 지중해 해변. 해변가 테라스에서 파에야와 상그리아로 점심.</div>
+<div class="food-near"><span class="food-near-chip">🦞 <strong>La Mar Salada</strong> — 해산물 파에야 (€22)</span><span class="food-near-chip">🍹 <strong>Barceloneta Bar</strong> — 상그리아+타파스 (€15)</span><span class="food-near-chip">🦑 <strong>La Cova Fumada</strong> — 원조 봄바스 (€2, 현금만)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🖼️</div>
-            <div><div class="spot-name">피카소 미술관 (Museu Picasso)</div><div class="spot-desc">피카소의 초기 작품 컬렉션. 마르고트, 시녀들 등. 사전 예약 추천. 입장료 €12.</div></div>
+            <div><div class="spot-name">피카소 미술관 (Museu Picasso)</div><div class="spot-desc">피카소의 초기 작품 컬렉션. 마르고트, 시녀들 등. 사전 예약 추천. 입장료 €12.</div>
+<div class="food-near"><span class="food-near-chip">🍾 <strong>El Xampanyet</strong> — 카바+안초비타파스 (€4, 미술관 바로 옆)</span><span class="food-near-chip">🥩 <strong>El Born 골목</strong> — 트렌디 레스토랑 밀집 (€15~20)</span></div></div>
           </li>
         </ul>
+        <div class="section-sub">🗺️ 추천 동선 & 이동 시간</div>
+        <div class="travel-flow">
+  <span class="tf-stop">🏨 호텔</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 10분</span> →</span>
+  <span class="tf-stop">🏰 고딕 지구</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 25분</span> →</span>
+  <span class="tf-stop">🌊 바르셀로네타 해변</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 20분</span> →</span>
+  <span class="tf-stop">🖼️ 피카소 미술관</span>
+</div>
       </div>
     </div>
 
@@ -974,24 +1851,38 @@
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label free">자유</div>
-        <div class="day-title-main"><div class="day-desc">10/6(화) — 전일 자유관광</div><div class="day-tags"><span class="tag tag-free">자유관광</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">10/6(화) — 전일 자유관광</div>
+        <div class="day-tags"><span class="tag tag-free">자유관광</span></div>
       </div>
       <div class="day-content">
         <div class="section-sub">📍 추천 코스 — 람블라스 & 몬주익</div>
         <ul class="spot-list">
           <li class="spot-item">
             <div class="spot-icon">🛒</div>
-            <div><div class="spot-name">보케리아 시장 (La Boqueria)</div><div class="spot-desc">람블라스 거리의 명물 재래시장. 신선한 과일·해산물·타파스. 아침 일찍 방문해야 덜 붐벼요.</div></div>
+            <div><div class="spot-name">보케리아 시장 (La Boqueria)</div><div class="spot-desc">람블라스 거리의 명물 재래시장. 신선한 과일·해산물·타파스. 아침 일찍 방문해야 덜 붐벼요.</div>
+<div class="food-near"><span class="food-near-chip">🥪 <strong>Bar Pinotxo</strong> — 병아리콩+볶음란 (€8, 전설적 명소)</span><span class="food-near-chip">🥤 <strong>El Quim de la Boqueria</strong> — 해산물 타파스 (€10)</span><span class="food-near-chip">🍹 <strong>과일주스 스탠드</strong> — 신선 착즙 주스 (€1~2)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">🎆</div>
-            <div><div class="spot-name">몬주익 매직 분수 (Font Màgica)</div><div class="spot-desc">음악에 맞춰 색이 변하는 분수 쇼. 목·일 저녁 무료 공연. 10월 기준 목 21:00, 금·토 21:30.</div></div>
+            <div><div class="spot-name">몬주익 매직 분수 (Font Màgica)</div><div class="spot-desc">음악에 맞춰 색이 변하는 분수 쇼. 목·일 저녁 무료 공연. 10월 기준 목 21:00, 금·토 21:30.</div>
+<div class="food-near"><span class="food-near-chip">🥩 <strong>Quimet & Quimet</strong> — 포블레 섹 핀초스 바 (€4)</span><span class="food-near-chip">🍺 <strong>Bar Calders</strong> — 분수 전 저녁 타파스 (€12)</span></div></div>
           </li>
           <li class="spot-item">
             <div class="spot-icon">⛵</div>
-            <div><div class="spot-name">벨 항구 (Port Vell)</div><div class="spot-desc">구항구. 람블라스 거리 끝에 위치. 콜럼버스 기념탑, 마레마그눔 쇼핑몰. 저녁 산책 명소.</div></div>
+            <div><div class="spot-name">벨 항구 (Port Vell)</div><div class="spot-desc">구항구. 람블라스 거리 끝에 위치. 콜럼버스 기념탑, 마레마그눔 쇼핑몰. 저녁 산책 명소.</div>
+<div class="food-near"><span class="food-near-chip">🦞 <strong>Bestial</strong> — 항구뷰 해산물 레스토랑 (€25)</span><span class="food-near-chip">🍺 <strong>El Chigre 1769</strong> — 스페인 맥주+타파스 (€10)</span></div></div>
           </li>
         </ul>
+        <div class="section-sub">🗺️ 추천 동선 & 이동 시간</div>
+        <div class="travel-flow">
+  <span class="tf-stop">🏨 호텔</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🛒 보케리아 시장</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 15분</span> →</span>
+  <span class="tf-stop">⛵ 벨 항구</span>
+  <span class="tf-arrow">→ <span class="tf-time">버스 or 케이블카 20분</span> →</span>
+  <span class="tf-stop">🎆 몬주익 매직 분수</span>
+</div>
         <div class="tip-box"><div class="tip-label">💡 몬세라트 선택</div>바르셀로나 근교 1시간. 기암괴석 산 위의 수도원과 검은 성모상, 에스콜라니아 합창단 공연(정해진 시간대 확인 필요). 당일 기차 여행으로 추천.</div>
       </div>
     </div>
@@ -1000,14 +1891,69 @@
     <div class="day-section">
       <div class="day-title-row" onclick="toggleDay(this)">
         <div class="day-label mix">혼합</div>
-        <div class="day-title-main"><div class="day-desc">10/7(수) — 자유관광 후 귀국 출발</div><div class="day-tags"><span class="tag tag-free">자유관광</span><span class="tag tag-transfer">이동</span></div></div><div class="day-chevron">›</div>
+        <div class="day-desc">10/7(수) — 자유관광 후 귀국 출발</div>
+        <div class="day-tags"><span class="tag tag-free">자유관광</span><span class="tag tag-transfer">이동</span></div>
       </div>
       <div class="day-content">
         <div class="info-grid">
-          <div class="info-box"><div class="info-box-label">✈️ 귀국 항공</div><div class="info-box-val">OZ512 · 바르셀로나 20:50<br>→ 인천 10/8(목) 16:20 도착<br>출발 3시간 전 공항 도착 필요</div></div>
-          <div class="info-box"><div class="info-box-label">💼 마지막 날 팁</div><div class="info-box-val">오전 자유 관광 후<br>16–17시 공항 이동 추천<br>마지막 에그타르트·상그리아 추천</div></div>
+          <div class="info-box"><div class="info-box-label">✈️ 귀국 항공 (OZ512)</div><div class="info-box-val">바르셀로나 <strong>20:50</strong> 출발<br>인천 10/8(목) <strong>16:20</strong> 도착<br>출발 3시간 전 공항 도착 필요</div></div>
+          <div class="info-box"><div class="info-box-label">💼 공항 이동</div><div class="info-box-val">공항까지 택시·공항버스 약 40분<br><strong>17:00–17:10</strong> 호텔 출발 권장<br>17:50 탑승 수속 마감 목표</div></div>
         </div>
-        <div class="tip-box"><div class="tip-label">💡 마지막 날 쇼핑</div>공항 이동 전 라파예트 백화점(El Corte Inglés) 또는 람블라스 거리에서 마지막 기념품 쇼핑. 스페인 대표 기념품: 만티야, 플라멩코 소품, 올리브 오일, 망고·자라 옷.</div>
+        <div class="warn-box" style="margin:12px 0">
+          <div class="tip-label">⏱️ 10/7 마지막 날 타임라인</div>
+          <b>09:00–11:00</b> 오전 코스 (보케리아·람블라스·고딕 지구) →
+          <b>11:00–13:00</b> 사그라다 파밀리아 주변 →
+          <b>13:00–15:30</b> 점심 + 몬주익·엘 코르테 잉글레스 쇼핑 →
+          <b>15:30–17:00</b> 호텔 짐 정리 & 마지막 짐 확인 →
+          <b>17:00</b> 공항 출발 (택시 약 40분) →
+          <b>17:50</b> 바르셀로나 공항 도착 →
+          <b>20:50</b> OZ512 탑승
+        </div>
+        <div class="section-sub">☀️ 오전 코스 (09:00–11:00)</div>
+        <ul class="spot-list">
+          <li class="spot-item">
+            <div class="spot-icon">🛒</div>
+            <div><div class="spot-name">보케리아 시장 & 람블라스 거리 아침 산책</div><div class="spot-desc">이른 아침 람블라스 거리를 걸으며 보케리아 시장에서 마지막 아침 식사. 신선한 과일주스·핀초스로 허니문 마지막 아침 마무리. 10시 이전 방문이 한산해요.</div></div>
+          </li>
+          <li class="spot-item">
+            <div class="spot-icon">🏰</div>
+            <div><div class="spot-name">고딕 지구 (Barri Gòtic) 골목 마지막 산책</div><div class="spot-desc">바르셀로나 대성당 앞 광장과 왕의 광장 주변 골목. 아침엔 조용해서 사진 찍기 최적. 기념품 숍들도 10시부터 열려요.</div>
+<div class="food-near"><span class="food-near-chip">☕ <strong>Bar del Pi</strong> — 카페 콘 레체+크루아상 (€4)</span><span class="food-near-chip">🥐 <strong>Federal Café</strong> — 아보카도 토스트+커피 (€9)</span></div></div>
+          </li>
+        </ul>
+        <div class="section-sub">🌞 오후 코스 (13:00–15:30)</div>
+        <ul class="spot-list">
+          <li class="spot-item">
+            <div class="spot-icon">🥘</div>
+            <div><div class="spot-name">바르셀로네타 해변가 마지막 파에야 점심</div><div class="spot-desc">허니문 마지막 식사는 지중해 해변에서 해산물 파에야로. 13:00–14:30 여유 있게 즐기고 공항 이동 전 든든하게 마무리.</div>
+<div class="food-near"><span class="food-near-chip">🥘 <strong>La Mar Salada</strong> — 해산물 파에야 (€22)</span><span class="food-near-chip">🦑 <strong>Suquet de l'Almirall</strong> — 카탈루냐 생선 스튜 (€25)</span><span class="food-near-chip">🍹 <strong>상그리아</strong> — 해변 테라스 (€8/잔)</span></div></div>
+          </li>
+          <li class="spot-item">
+            <div class="spot-icon">🛍️</div>
+            <div><div class="spot-name">엘 코르테 잉글레스 (El Corte Inglés) 마지막 쇼핑</div><div class="spot-desc">카탈루냐 광장 앞 스페인 최대 백화점. 올리브 오일·하몽·초콜릿·플라멩코 소품 쇼핑 최적. 지하 슈퍼마켓에서 공항용 간식도 구매하기 좋아요.</div>
+<div class="food-near"><span class="food-near-chip">🧀 <strong>지하 슈퍼마켓</strong> — 하몽·올리브오일·초콜릿 기념품 (€5~)</span><span class="food-near-chip">☕ <strong>9층 카페테리아</strong> — 카탈루냐 광장 뷰+커피 (€5)</span></div></div>
+          </li>
+          <li class="spot-item">
+            <div class="spot-icon">🎆</div>
+            <div><div class="spot-name">몬주익 국립미술관 (MNAC) 계단 전망</div><div class="spot-desc">미술관 계단에서 바라보는 바르셀로나 시내 전경. 분수 광장까지 도보로 이동 가능. 무료 외부 관람. 시간 여유 있을 때 잠깐 들르기 좋아요.</div>
+<div class="food-near"><span class="food-near-chip">🥩 <strong>Quimet & Quimet</strong> — 포블레 섹 핀초스 명소 (€4)</span><span class="food-near-chip">☕ <strong>미술관 내 카페테리아</strong> — 커피+케이크+시내 뷰 (€6)</span></div></div>
+          </li>
+        </ul>
+        <div class="section-sub">🗺️ 추천 동선 & 이동 시간</div>
+        <div class="travel-flow">
+  <span class="tf-stop">🏨 호텔 (09:00)</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🛒 보케리아·람블라스</span>
+  <span class="tf-arrow">→ <span class="tf-time">도보 5분</span> →</span>
+  <span class="tf-stop">🏰 고딕 지구</span>
+  <span class="tf-arrow">→ <span class="tf-time">지하철 15분</span> →</span>
+  <span class="tf-stop">🥘 바르셀로네타 점심</span>
+  <span class="tf-arrow">→ <span class="tf-time">지하철 20분</span> →</span>
+  <span class="tf-stop">🛍️ 엘 코르테 잉글레스</span>
+  <span class="tf-arrow">→ <span class="tf-time">🚕 택시 40분</span> →</span>
+  <span class="tf-stop">✈️ 바르셀로나 공항 (17:50)</span>
+</div>
+        <div class="tip-box"><div class="tip-label">💡 마지막 날 쇼핑 팁</div>올리브 오일·하몽·만티야·플라멩코 소품이 스페인 대표 기념품. 공항 면세점보다 엘 코르테 잉글레스나 람블라스 기념품 거리가 더 다양하고 저렴해요.</div>
       </div>
     </div>
 
@@ -1047,8 +1993,8 @@
 </div>
 
 <!-- ===== 하단 메모 ===== -->
-<div class="checklist">
-  <div class="checklist-title">📝 여행 전 체크리스트</div>
+<div style="margin-top:32px;padding:20px;background:#fff;border-radius:12px;border:1px solid #e0ddd5;font-size:13px;color:#666;line-height:1.8">
+  <div style="font-weight:700;color:#2c2c2a;margin-bottom:8px">📝 여행 전 체크리스트</div>
   ✅ 알함브라 입장권 — 여행 최소 3개월 전 예약 (여권번호 필요, 변경·취소 불가)<br>
   ✅ 렐루 서점 — 오전 일찍 방문 (줄 없이 편하게 관람)<br>
   ✅ 와이너리 투어 — 칼렘 or 테일러 사전 온라인 예약<br>
@@ -1058,10 +2004,16 @@
   ✅ 포르투 카드 — 포르투 교통+명소 통합 할인카드<br>
   ✅ 28번 트램 — 소매치기 주의, 소지품 관리 철저히<br>
   <br>
-  <div class="checklist-note">* 투어 날짜 및 순서는 현지 사정에 따라 변경될 수 있습니다.<br>* 입장료·물가는 2025년 기준이며 변동 가능합니다.</div>
+  <div style="font-size:12px;color:#aaa">* 투어 날짜 및 순서는 현지 사정에 따라 변경될 수 있습니다.<br>* 입장료·물가는 2025년 기준이며 변동 가능합니다.</div>
 </div>
 
 </div><!-- /container -->
+
+<!-- 편집 툴바 -->
+<div class="edit-toolbar">
+  <button class="edit-btn btn-toggle" id="editToggleBtn" onclick="toggleEditMode()">✏️ 편집 모드</button>
+  <button class="edit-btn btn-save" id="saveBtn" onclick="saveHTML()" style="display:none">💾 파일로 저장</button>
+</div>
 
 <script>
 function toggleCity(header) {
@@ -1069,19 +2021,339 @@ function toggleCity(header) {
   const toggle = header.querySelector('.city-toggle');
   const isOpen = body.classList.toggle('open');
   toggle.classList.toggle('open', isOpen);
+  initMapLinks();
 }
 
 function toggleDay(titleRow) {
   const content = titleRow.nextElementSibling;
-  const chevron = titleRow.querySelector('.day-chevron');
-  const isOpen = content.classList.toggle('open');
-  if (chevron) chevron.classList.toggle('open', isOpen);
+  content.classList.toggle('open');
 }
 
-// 첫 번째 도시(바르셀로나 경유)는 기본 접힘, 포르투만 기본 펼침
 document.addEventListener('DOMContentLoaded', function() {
-  // 포르투 body는 이미 open 클래스로 세팅됨
+  initMapLinks();
 });
+
+/* ===== 타임라인 토글 ===== */
+function toggleTimeline(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.tl-toggle-arrow');
+  const label = header.querySelector('.tl-toggle-label');
+  const isOpen = body.classList.toggle('open');
+  arrow.style.transform = isOpen ? 'rotate(180deg)' : '';
+  label.textContent = isOpen ? '클릭해서 접기' : '클릭해서 펼치기';
+}
+
+/* ===== 구글맵 링크 초기화 ===== */
+function initMapLinks() {
+  document.querySelectorAll('.city-block').forEach(block => {
+    const city = block.getAttribute('data-city') || '';
+
+    // 도시 헤더에 지도 버튼 추가
+    const header = block.querySelector('.city-header');
+    if (header && !header.querySelector('.city-map-btn')) {
+      const btn = document.createElement('button');
+      btn.className = 'city-map-btn';
+      btn.textContent = '🗺️ 지도';
+      btn.title = city + ' 구글맵 열기';
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        window.open('https://www.google.com/maps/search/' + encodeURIComponent(city), '_blank');
+      });
+      // city-toggle 앞에 삽입
+      const toggle = header.querySelector('.city-toggle');
+      header.insertBefore(btn, toggle);
+    }
+
+    // 명소 이름마다 구글맵 링크 추가
+    block.querySelectorAll('.spot-name').forEach(nameEl => {
+      if (nameEl.querySelector('.spot-map-link')) return; // 중복 방지
+      const spotName = nameEl.textContent.trim();
+      const query = spotName + ' ' + city;
+      const link = document.createElement('a');
+      link.className = 'spot-map-link';
+      link.href = 'https://www.google.com/maps/search/' + encodeURIComponent(query);
+      link.target = '_blank';
+      link.title = '구글맵에서 보기';
+      link.innerHTML = '📍 지도';
+      link.addEventListener('click', e => e.stopPropagation());
+      nameEl.appendChild(link);
+    });
+  });
+}
+
+/* ===== 편집 모드 ===== */
+const EDITABLE_SELECTORS = [
+  '.trip-title', '.trip-sub',
+  '.stat-num', '.stat-label',
+  '.city-name', '.city-badge', '.city-weather',
+  '.city-intro',
+  '.day-desc',
+  '.spot-name', '.spot-desc',
+  '.food-name', '.food-desc', '.food-price', '.food-where',
+  '.info-box-val',
+  '.tip-label',
+  '.hotel-row',
+  '.section-sub'
+];
+
+// tip-box / warn-box 본문 텍스트 노드를 span으로 감싸는 처리
+function wrapTipBoxText() {
+  document.querySelectorAll('.tip-box, .warn-box').forEach(box => {
+    Array.from(box.childNodes).forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+        const span = document.createElement('span');
+        span.className = 'tip-text-editable';
+        span.textContent = node.textContent;
+        node.replaceWith(span);
+      }
+    });
+  });
+  EDITABLE_SELECTORS.push('.tip-text-editable');
+}
+
+let editMode = false;
+
+function toggleEditMode() {
+  editMode = !editMode;
+  const btn = document.getElementById('editToggleBtn');
+  const saveBtn = document.getElementById('saveBtn');
+
+  if (editMode) {
+    wrapTipBoxText();
+    document.body.classList.add('edit-mode');
+    btn.textContent = '✅ 편집 완료';
+    btn.classList.add('active');
+    saveBtn.style.display = 'flex';
+
+    // 모든 편집 가능 요소에 contenteditable 적용
+    document.querySelectorAll(EDITABLE_SELECTORS.join(',')).forEach(el => {
+      el.setAttribute('contenteditable', 'true');
+      el.setAttribute('spellcheck', 'false');
+      // 클릭 시 도시/날짜 토글 막기
+      el.addEventListener('click', stopPropagation, true);
+    });
+
+    // 삭제 버튼 추가
+    addDeleteButtons();
+
+    // 새 항목 추가 버튼 추가
+    addInsertButtons();
+
+  } else {
+    document.body.classList.remove('edit-mode');
+    btn.textContent = '✏️ 편집 모드';
+    btn.classList.remove('active');
+
+    document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+      el.removeAttribute('contenteditable');
+      el.removeEventListener('click', stopPropagation, true);
+    });
+
+    document.querySelectorAll('.delete-btn, .insert-btn').forEach(b => b.remove());
+  }
+}
+
+function stopPropagation(e) { e.stopPropagation(); }
+
+function addDeleteButtons() {
+  // 명소 항목 삭제
+  document.querySelectorAll('.spot-item').forEach(item => {
+    const btn = makeDeleteBtn(() => item.remove());
+    item.appendChild(btn);
+  });
+  // 맛집 카드 삭제
+  document.querySelectorAll('.food-card').forEach(card => {
+    const btn = makeDeleteBtn(() => card.remove());
+    card.appendChild(btn);
+  });
+}
+
+function makeDeleteBtn(onDelete) {
+  const btn = document.createElement('button');
+  btn.className = 'delete-btn';
+  btn.textContent = '×';
+  btn.title = '삭제';
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (confirm('이 항목을 삭제할까요?')) onDelete();
+  });
+  return btn;
+}
+
+function addInsertButtons() {
+  // 각 spot-list 하단에 명소 추가 버튼
+  document.querySelectorAll('.spot-list').forEach(list => {
+    const btn = makeInsertBtn('+ 명소 추가', '#7F77DD', e => {
+      e.stopPropagation();
+      const li = document.createElement('li');
+      li.className = 'spot-item';
+      li.innerHTML = `
+        <div class="spot-icon" contenteditable="true" spellcheck="false">📍</div>
+        <div>
+          <div class="spot-name" contenteditable="true" spellcheck="false">명소 이름</div>
+          <div class="spot-desc" contenteditable="true" spellcheck="false">설명을 입력하세요.</div>
+        </div>`;
+      li.appendChild(makeDeleteBtn(() => li.remove()));
+      list.appendChild(li);
+      li.querySelector('.spot-name').focus();
+    });
+    list.after(btn);
+  });
+
+  // 각 food-grid 하단에 맛집 추가 버튼
+  document.querySelectorAll('.food-grid').forEach(grid => {
+    const btn = makeInsertBtn('+ 맛집 추가', '#7F77DD', e => {
+      e.stopPropagation();
+      const card = document.createElement('div');
+      card.className = 'food-card';
+      card.innerHTML = `
+        <div class="food-name" contenteditable="true" spellcheck="false">🍽️ 메뉴 이름</div>
+        <div class="food-desc" contenteditable="true" spellcheck="false">설명을 입력하세요.</div>
+        <div class="food-price" contenteditable="true" spellcheck="false">💰 가격</div>
+        <div class="food-where" contenteditable="true" spellcheck="false">📍 식당명</div>`;
+      card.appendChild(makeDeleteBtn(() => card.remove()));
+      grid.appendChild(card);
+      card.querySelector('.food-name').focus();
+    });
+    grid.after(btn);
+  });
+
+  // 각 city-body 하단에 날짜 섹션 추가 버튼
+  document.querySelectorAll('.city-body').forEach(cityBody => {
+    // hotel-row 바로 앞에 삽입되도록 hotel-row 앞에 버튼 배치
+    const hotelRow = cityBody.querySelector('.hotel-row');
+    const btn = makeInsertBtn('+ 날짜 추가', '#d4930e', e => {
+      e.stopPropagation();
+      const section = document.createElement('div');
+      section.className = 'day-section';
+      section.innerHTML = `
+        <div class="day-title-row" onclick="toggleDay(this)">
+          <div class="day-label free" contenteditable="true" spellcheck="false">자유</div>
+          <div class="day-desc" contenteditable="true" spellcheck="false">날짜 및 일정 제목을 입력하세요</div>
+        </div>
+        <div class="day-content open">
+          <div class="section-sub" contenteditable="true" spellcheck="false">📍 추천 코스</div>
+          <ul class="spot-list"></ul>
+        </div>`;
+      section.appendChild(makeDeleteBtn(() => section.remove()));
+      // hotel-row 앞에 삽입
+      cityBody.insertBefore(section, hotelRow || null);
+      // 새 spot-list에도 명소 추가 버튼 달기
+      const newList = section.querySelector('.spot-list');
+      const spotBtn = makeInsertBtn('+ 명소 추가', '#7F77DD', ev => {
+        ev.stopPropagation();
+        const li = document.createElement('li');
+        li.className = 'spot-item';
+        li.innerHTML = `
+          <div class="spot-icon" contenteditable="true" spellcheck="false">📍</div>
+          <div>
+            <div class="spot-name" contenteditable="true" spellcheck="false">명소 이름</div>
+            <div class="spot-desc" contenteditable="true" spellcheck="false">설명을 입력하세요.</div>
+          </div>`;
+        li.appendChild(makeDeleteBtn(() => li.remove()));
+        newList.appendChild(li);
+        li.querySelector('.spot-name').focus();
+      });
+      newList.after(spotBtn);
+      section.querySelector('.day-desc').focus();
+    });
+    btn.style.margin = '8px 20px 12px';
+    if (hotelRow) cityBody.insertBefore(btn, hotelRow);
+    else cityBody.appendChild(btn);
+  });
+
+  // 컨테이너 하단에 도시 블록 추가 버튼
+  const container = document.querySelector('.container');
+  const addCityBtn = makeInsertBtn('+ 도시 추가', '#2c2c2a', e => {
+    e.stopPropagation();
+    const block = document.createElement('div');
+    block.className = 'city-block';
+    block.innerHTML = `
+      <div class="city-header" onclick="toggleCity(this)">
+        <div class="city-dot" style="background:#1D9E75"></div>
+        <div class="city-name" contenteditable="true" spellcheck="false">🏙️ 도시 이름</div>
+        <div class="city-badge" contenteditable="true" spellcheck="false">날짜 · 박수</div>
+        <div class="city-weather" contenteditable="true" spellcheck="false">🌤️ 기온</div>
+        <div class="city-toggle">▼</div>
+      </div>
+      <div class="city-body open">
+        <div class="city-intro" contenteditable="true" spellcheck="false">도시 소개를 입력하세요.</div>
+        <div class="day-section">
+          <div class="day-title-row" onclick="toggleDay(this)">
+            <div class="day-label free" contenteditable="true" spellcheck="false">자유</div>
+            <div class="day-desc" contenteditable="true" spellcheck="false">날짜 및 일정 제목을 입력하세요</div>
+          </div>
+          <div class="day-content open">
+            <div class="section-sub" contenteditable="true" spellcheck="false">📍 추천 코스</div>
+            <ul class="spot-list"></ul>
+          </div>
+        </div>
+        <div class="hotel-row"><span class="hotel-icon">🏨</span> <span contenteditable="true" spellcheck="false">호텔명 · 박수</span></div>
+      </div>`;
+    block.appendChild(makeDeleteBtn(() => {
+      if (confirm('이 도시 블록 전체를 삭제할까요?')) block.remove();
+    }));
+    // 새 spot-list에 명소 추가 버튼
+    const newList = block.querySelector('.spot-list');
+    const spotBtn = makeInsertBtn('+ 명소 추가', '#7F77DD', ev => {
+      ev.stopPropagation();
+      const li = document.createElement('li');
+      li.className = 'spot-item';
+      li.innerHTML = `
+        <div class="spot-icon" contenteditable="true" spellcheck="false">📍</div>
+        <div>
+          <div class="spot-name" contenteditable="true" spellcheck="false">명소 이름</div>
+          <div class="spot-desc" contenteditable="true" spellcheck="false">설명을 입력하세요.</div>
+        </div>`;
+      li.appendChild(makeDeleteBtn(() => li.remove()));
+      newList.appendChild(li);
+      li.querySelector('.spot-name').focus();
+    });
+    newList.after(spotBtn);
+    // 삽입: 하단 메모 섹션 앞에
+    const memo = container.querySelector('[style*="margin-top:32px"]');
+    container.insertBefore(block, memo || null);
+    block.querySelector('.city-name').focus();
+  });
+  addCityBtn.style.cssText = 'margin:0 auto 24px;display:flex;width:fit-content;';
+  // 하단 메모 앞에
+  const memo = container.querySelector('[style*="margin-top:32px"]');
+  container.insertBefore(addCityBtn, memo || null);
+}
+
+function makeInsertBtn(label, color, onClick) {
+  const btn = document.createElement('button');
+  btn.className = 'edit-btn insert-btn';
+  btn.style.cssText = `background:${color};color:#fff;font-size:12px;padding:6px 14px;border-radius:16px;margin:6px 0;`;
+  btn.textContent = label;
+  btn.addEventListener('click', onClick);
+  return btn;
+}
+
+/* ===== HTML 저장 ===== */
+function saveHTML() {
+  // 편집 모드 종료 후 저장
+  const wasEditing = editMode;
+  if (wasEditing) toggleEditMode();
+
+  // 툴바·배너 숨기고 직렬화
+  const toolbar = document.querySelector('.edit-toolbar');
+  const banner = document.querySelector('.edit-mode-banner');
+  toolbar.style.display = 'none';
+  banner.style.display = 'none';
+
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  toolbar.style.display = '';
+  banner.style.display = '';
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'honeymoon_itinerary.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
 </script>
 </body>
 </html>
